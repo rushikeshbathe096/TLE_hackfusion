@@ -47,16 +47,17 @@ export default function ComplaintCard({ complaint, staffList, onAssign }: Compla
     };
 
     const handleAssign = async () => {
-        if (selectedStaffIds.length === 0) return;
+        // Allow saving empty list (clearing assignments)
         await onAssign(complaint._id, selectedStaffIds);
         setIsAssigning(false);
         setSelectedStaffIds([]);
     };
 
     return (
-        <div className="bg-card border rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-            {/* Priority Indicator */}
-            <div className={`absolute top-0 right-0 px-3 py-1 text-xs font-bold rounded-bl-xl border-l border-b ${getPriorityColor(complaint.priorityScore)}`}>
+        // Removed overflow-hidden to allow dropdown to pop out
+        <div className="bg-card border rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative group">
+            {/* Priority Indicator - manually rounded top-right to match card */}
+            <div className={`absolute top-0 right-0 px-3 py-1 text-xs font-bold rounded-tr-xl rounded-bl-xl border-l border-b ${getPriorityColor(complaint.priorityScore)}`}>
                 Priority Score: {complaint.priorityScore}
             </div>
 
@@ -87,12 +88,12 @@ export default function ComplaintCard({ complaint, staffList, onAssign }: Compla
                         <div className="flex items-center gap-2">
                             <div className="flex -space-x-2">
                                 {complaint.assignedStaff.slice(0, 3).map((staff, i) => (
-                                    <div key={i} className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-[10px] font-bold border-2 border-background" title={staff.name}>
+                                    <div key={i} className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold border-2 border-background shadow-sm" title={staff.name}>
                                         {staff.name.charAt(0)}
                                     </div>
                                 ))}
                                 {complaint.assignedStaff.length > 3 && (
-                                    <div className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-[10px] font-bold border-2 border-background">
+                                    <div className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-xs font-bold border-2 border-background shadow-sm">
                                         +{complaint.assignedStaff.length - 3}
                                     </div>
                                 )}
@@ -105,76 +106,67 @@ export default function ComplaintCard({ complaint, staffList, onAssign }: Compla
                                     setSelectedStaffIds(currentIds);
                                     setIsAssigning(true);
                                 }}
-                                className="w-6 h-6 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+                                className="w-7 h-7 rounded-full bg-foreground text-background flex items-center justify-center shadow-md hover:scale-110 transition-transform"
                                 title="Manage Staff (Add/Remove)"
                             >
-                                <span className="text-sm font-bold leading-none mb-0.5">+</span>
+                                <span className="text-base font-bold leading-none mb-0.5">+</span>
                             </button>
                         </div>
                     ) : (
                         <div className="relative">
                             {isAssigning ? (
-                                <div className="absolute bottom-full right-0 mb-2 w-72 bg-popover border border-border shadow-2xl rounded-xl p-4 z-50 animate-in fade-in zoom-in-95">
-                                    <div className="flex justify-between items-center mb-3 pb-2 border-b">
-                                        <span className="text-sm font-bold">Manage Staff</span>
-                                        <button onClick={() => setIsAssigning(false)} className="text-muted-foreground hover:bg-muted p-1 rounded-full px-2">
-                                            Close
+                                <>
+                                    {/* Backdrop to close when clicking outside */}
+                                    <div className="fixed inset-0 z-40" onClick={() => setIsAssigning(false)}></div>
+
+                                    <div className="absolute bottom-full right-0 mb-2 w-72 bg-popover border border-border shadow-2xl rounded-xl p-4 z-50 animate-in fade-in zoom-in-95 ring-1 ring-black/5 dark:ring-white/10">
+                                        <div className="flex justify-between items-center mb-3 pb-2 border-b">
+                                            <span className="text-sm font-bold">Manage Staff</span>
+                                            <button onClick={() => setIsAssigning(false)} className="text-muted-foreground hover:bg-muted p-1 rounded-full px-2 text-xs">
+                                                Close
+                                            </button>
+                                        </div>
+
+                                        <div className="max-h-64 overflow-y-auto space-y-1 mb-3 scrollbar-thin scrollbar-thumb-muted-foreground/20">
+                                            {staffList.map(s => {
+                                                const isAssigned = selectedStaffIds.includes(s._id);
+                                                const actuallyAssignedToThis = complaint.assignedStaff?.some(as => as._id === s._id);
+                                                const isDisabled = !s.isAvailable && !actuallyAssignedToThis;
+
+                                                return (
+                                                    <div
+                                                        key={s._id}
+                                                        onClick={() => !isDisabled && toggleStaffSelection(s._id)}
+                                                        className={`flex items-center justify-between p-2 rounded-lg border transition-all cursor-pointer ${isAssigned ? 'bg-primary/10 border-primary/50' : 'hover:bg-muted/50 border-transparent'
+                                                            } ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                    >
+                                                        <div className="flex items-center gap-3 overflow-hidden">
+                                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isAssigned ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                                                                {s.name.charAt(0)}
+                                                            </div>
+                                                            <div className="flex flex-col min-w-0">
+                                                                <span className={`text-sm font-medium truncate ${isAssigned ? 'text-foreground' : 'text-muted-foreground'}`}>{s.name}</span>
+                                                                {isDisabled && <span className="text-[10px] text-red-500">Busy on other task</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        {isAssigned && <CheckCircle size={16} className="text-primary fill-primary/20" />}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                        <button
+                                            onClick={handleAssign}
+                                            className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-bold hover:brightness-110 shadow-md transition-all active:scale-95"
+                                        >
+                                            {selectedStaffIds.length === 0 ? "Clear Assignments" : `Save Changes (${selectedStaffIds.length})`}
                                         </button>
                                     </div>
-
-                                    <div className="max-h-60 overflow-y-auto space-y-1 mb-3">
-                                        {staffList.map(s => {
-                                            const isAssigned = selectedStaffIds.includes(s._id);
-                                            // Available if: marked available by API OR already assigned to this task (so we can keep them)
-                                            // We need to check if they are in the PROPS complaint.assignedStaff to know if they are "already assigned to THIS task" validation-wise
-                                            // But effectively, 'isAssigned' (checked) means they are in the proposed list.
-                                            // 's.isAvailable' comes from the global list.
-                                            // If s is currently assigned to THIS task, we ignore s.isAvailable=false.
-                                            const actuallyAssignedToThis = complaint.assignedStaff?.some(as => as._id === s._id);
-                                            const isDisabled = !s.isAvailable && !actuallyAssignedToThis;
-
-                                            return (
-                                                <div key={s._id} className={`flex items-center justify-between p-2 rounded-lg border transition-colors ${isAssigned ? 'bg-primary/5 border-primary/20' : 'hover:bg-muted/50 border-transparent'}`}>
-                                                    <div className="flex items-center gap-3 overflow-hidden">
-                                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isAssigned ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
-                                                            {s.name.charAt(0)}
-                                                        </div>
-                                                        <div className="flex flex-col min-w-0">
-                                                            <span className={`text-sm font-medium truncate ${isAssigned ? 'text-foreground' : 'text-muted-foreground'}`}>{s.name}</span>
-                                                            {isDisabled && <span className="text-[10px] text-red-500">Busy on other task</span>}
-                                                        </div>
-                                                    </div>
-
-                                                    <button
-                                                        disabled={isDisabled}
-                                                        onClick={() => toggleStaffSelection(s._id)}
-                                                        className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${isAssigned
-                                                            ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                                                            : 'bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 text-foreground'
-                                                            } ${isDisabled ? 'opacity-30 cursor-not-allowed' : ''}`}
-                                                        title={isAssigned ? "Remove (X)" : "Add (+)"}
-                                                    >
-                                                        {isAssigned ? (
-                                                            <span className="font-bold text-xs">✕</span>
-                                                        ) : (
-                                                            <span className="font-bold text-lg leading-none mb-0.5">+</span>
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                    <button
-                                        onClick={handleAssign}
-                                        className="w-full bg-primary text-primary-foreground py-2 rounded-lg text-sm font-bold hover:opacity-90 disabled:opacity-50"
-                                    >
-                                        Save Changes ({selectedStaffIds.length})
-                                    </button>
-                                </div>
+                                </>
                             ) : (
                                 <button
                                     onClick={() => setIsAssigning(true)}
-                                    className="text-xs bg-black text-white dark:bg-white dark:text-black px-3 py-1.5 rounded-full font-medium shadow-sm hover:opacity-80 transition-opacity flex items-center gap-1"
+                                    className="text-xs bg-foreground text-background px-3 py-1.5 rounded-full font-medium shadow-sm hover:opacity-90 transition-opacity flex items-center gap-1"
                                 >
                                     Assign <span className="text-base font-bold leading-none ml-1 mb-0.5">+</span>
                                 </button>
