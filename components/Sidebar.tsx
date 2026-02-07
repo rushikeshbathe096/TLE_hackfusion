@@ -32,7 +32,7 @@ export default function Sidebar({ role }: SidebarProps) {
         { name: "Complain", href: "/dashboard/complain", icon: FileText },
         { name: "About Us", href: "/dashboard/about", icon: Info },
         { name: "Contact", href: "/dashboard/contact", icon: Phone },
-        { name: "Help", href: "/help", icon: HelpCircle },
+        { name: "Help", href: "/dashboard/citizen/help", icon: HelpCircle },
     ];
 
     const authorityLinks = [
@@ -45,7 +45,7 @@ export default function Sidebar({ role }: SidebarProps) {
     const staffLinks = [
         { name: "Dashboard", href: "/dashboard/staff", icon: LayoutDashboard },
         { name: "Work Images", href: "/dashboard/staff/work-images", icon: ImageIcon },
-        { name: "Help", href: "/help", icon: HelpCircle },
+        { name: "Help", href: "/dashboard/staff/help", icon: HelpCircle },
     ];
 
     type LinkItem = { name: string; href: string; icon: React.ElementType };
@@ -77,7 +77,7 @@ export default function Sidebar({ role }: SidebarProps) {
 
             {/* Sidebar */}
             <aside
-                className={`fixed left-0 top-0 h-full w-64 bg-slate-900/95 backdrop-blur-xl border-r border-white/10 dark:bg-slate-900/95 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-900 border-r border-slate-200 dark:border-white/10 flex flex-col z-50 transition-transform duration-300 ease-in-out shadow-2xl ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+                className={`fixed left-0 top-0 h-full w-64 backdrop-blur-xl border-r border-slate-200 dark:border-white/10 flex flex-col z-50 transition-transform duration-300 ease-in-out shadow-2xl bg-gradient-to-b from-blue-50 to-white dark:from-zinc-800 dark:to-zinc-950 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
                 <div className="p-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
@@ -113,11 +113,11 @@ export default function Sidebar({ role }: SidebarProps) {
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${isActive
-                                    ? "bg-primary text-primary-foreground shadow-md dark:bg-primary/10 dark:text-primary dark:shadow-none font-medium"
-                                    : "text-slate-600 dark:text-muted-foreground hover:bg-white dark:hover:bg-accent hover:shadow-sm dark:hover:shadow-none hover:text-slate-900 dark:hover:text-foreground"
+                                    ? "bg-primary text-primary-foreground shadow-md dark:bg-white dark:text-black dark:shadow-none font-medium"
+                                    : "text-slate-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700/50 hover:shadow-sm dark:hover:shadow-none hover:text-slate-900 dark:hover:text-white"
                                     }`}
                             >
-                                <Icon size={20} className={isActive ? "text-primary-foreground dark:text-primary" : "text-slate-500 dark:text-muted-foreground group-hover:text-slate-900 dark:group-hover:text-foreground transition-colors"} />
+                                <Icon size={20} className={isActive ? "text-primary-foreground dark:text-black" : "text-slate-500 dark:text-zinc-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors"} />
                                 <span className="font-medium">{link.name}</span>
                             </Link>
                         );
