@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 // @ts-ignore
 import DarkVeil from "@/components/DarkVeil";
-// @ts-ignore
-import Particles from "@/components/Particles";
+
 import { ThemeLogo } from "@/components/theme-logo";
+import { useUser } from "@/contexts/UserContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,17 +20,30 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
+
+  // Theme effects
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  // User context
+  const { user, refreshUser, loading: userLoading } = useUser();
+
   useEffect(() => {
     setMounted(true);
-    const token = localStorage.getItem("token");
-    if (token) {
-      // Verify if token is valid (optional, but good practice) or just redirect
-      router.push("/dashboard");
+  }, []);
+
+  useEffect(() => {
+    // Redirect if user is already logged in (and we have fetched user data)
+    if (!userLoading && user) {
+      if (user.role === 'authority') {
+        router.push("/dashboard/authority");
+      } else if (user.role === 'staff') {
+        router.push("/dashboard/staff");
+      } else {
+        router.push("/dashboard");
+      }
     }
-  }, [router]);
+  }, [user, userLoading, router]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -50,13 +63,10 @@ export default function LoginPage() {
       }
       if (data.token) localStorage.setItem("token", data.token);
 
-      if (data.role === 'authority') {
-        router.push("/dashboard/authority");
-      } else if (data.role === 'staff') {
-        router.push("/dashboard/staff");
-      } else {
-        router.push("/dashboard");
-      }
+      // Refresh user context to ensure we have the latest user data before redirecting
+      await refreshUser();
+
+      // The useEffect will handle the redirect once user is set
     } catch (err) {
       setError("Network error");
     } finally {
