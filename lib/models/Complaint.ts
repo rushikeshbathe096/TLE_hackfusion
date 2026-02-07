@@ -70,11 +70,12 @@ const ComplaintSchema = new mongoose.Schema(
             default: "OPEN",
         },
 
-        assignedTo: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User", // Staff
-            default: null,
-        },
+        assignedStaff: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User", // Staff
+            },
+        ],
 
         /* ---- STAFF RESOLUTION ---- */
         proofUrl: {
