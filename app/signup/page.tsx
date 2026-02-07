@@ -2,6 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTheme } from "next-themes";
+// @ts-ignore
+import DarkVeil from "@/components/DarkVeil";
+// @ts-ignore
+import Particles from "@/components/Particles";
+import { ThemeLogo } from "@/components/theme-logo";
 
 const SignUp = () => {
     const router = useRouter();
@@ -14,8 +20,11 @@ const SignUp = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+    const { resolvedTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
         const token = localStorage.getItem("token");
         if (token) {
             router.push("/dashboard");
@@ -65,9 +74,43 @@ const SignUp = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition-colors duration-300">
-            <div className="w-full max-w-md bg-card rounded-2xl p-8 shadow-xl ring-1 ring-border">
-                <h2 className="text-2xl font-bold mb-4 text-center">Create an account</h2>
+        <div className="min-h-screen relative flex items-center justify-center bg-background text-foreground transition-colors duration-300 overflow-hidden">
+
+            {/* Dark Mode Background */}
+            {mounted && resolvedTheme === "dark" && (
+                <div className="absolute inset-0 z-0 pointer-events-none">
+                    <DarkVeil
+                        hueShift={35}
+                        noiseIntensity={0}
+                        scanlineIntensity={0}
+                        speed={0.5}
+                        scanlineFrequency={0}
+                        warpAmount={0}
+                        resolutionScale={1}
+                    />
+                </div>
+            )}
+
+            {/* Light Mode Background */}
+            {mounted && resolvedTheme === "light" && (
+                <div className="absolute inset-0 z-0 pointer-events-none filter invert opacity-60">
+                    <DarkVeil
+                        hueShift={35}
+                        noiseIntensity={0}
+                        scanlineIntensity={0}
+                        speed={0.5}
+                        scanlineFrequency={0}
+                        warpAmount={0}
+                        resolutionScale={1}
+                    />
+                </div>
+            )}
+
+            <div className="relative z-10 w-full max-w-md bg-card rounded-2xl p-8 shadow-xl ring-1 ring-border">
+                <div className="flex flex-col items-center mb-6">
+                    <ThemeLogo className="w-16 h-16 mb-2" />
+                    <h2 className="text-2xl font-bold text-center">Create an account</h2>
+                </div>
                 <form onSubmit={handleSignUp} className="space-y-4">
                     <div className="text-sm text-muted-foreground text-center">
                         Already have an account?{' '}

@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-// import PixelBlast from "@/components/PixelBlast";
+import { useTheme } from "next-themes";
+// @ts-ignore
+import DarkVeil from "@/components/DarkVeil";
+// @ts-ignore
+import Particles from "@/components/Particles";
+import { ThemeLogo } from "@/components/theme-logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -15,8 +20,11 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const token = localStorage.getItem("token");
     if (token) {
       // Verify if token is valid (optional, but good practice) or just redirect
@@ -121,11 +129,44 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen relative flex items-center justify-center text-foreground overflow-hidden bg-background transition-colors duration-300">
 
+      {/* Dark Mode Background */}
+      {mounted && resolvedTheme === "dark" && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <DarkVeil
+            hueShift={35}
+            noiseIntensity={0}
+            scanlineIntensity={0}
+            speed={0.5}
+            scanlineFrequency={0}
+            warpAmount={0}
+            resolutionScale={1}
+          />
+        </div>
+      )}
+
+      {/* Light Mode Background */}
+      {mounted && resolvedTheme === "light" && (
+        <div className="absolute inset-0 z-0 pointer-events-none filter invert opacity-60">
+          <DarkVeil
+            hueShift={35}
+            noiseIntensity={0}
+            scanlineIntensity={0}
+            speed={0.5}
+            scanlineFrequency={0}
+            warpAmount={0}
+            resolutionScale={1}
+          />
+        </div>
+      )}
+
       {/* Login Form Container */}
       <div className="relative z-10 w-full max-w-md bg-card rounded-2xl p-8 shadow-xl ring-1 ring-border">
         {!isForgotPassword ? (
           <>
-            <h2 className="text-2xl font-bold mb-4 text-center">Sign in</h2>
+            <div className="flex flex-col items-center mb-6">
+              <ThemeLogo className="w-16 h-16 mb-2" />
+              <h2 className="text-2xl font-bold text-center">Sign in</h2>
+            </div>
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
                 <label className="block text-sm text-muted-foreground mb-1">Email</label>
