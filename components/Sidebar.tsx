@@ -30,8 +30,8 @@ export default function Sidebar({ role }: SidebarProps) {
     const citizenLinks = [
         { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
         { name: "Complain", href: "/dashboard/complain", icon: FileText },
-        { name: "About Us", href: "/about", icon: Info },
-        { name: "Contact", href: "/contact", icon: Phone },
+        { name: "About Us", href: "/dashboard/about", icon: Info },
+        { name: "Contact", href: "/dashboard/contact", icon: Phone },
         { name: "Help", href: "/help", icon: HelpCircle },
     ];
 

@@ -1,41 +1,60 @@
-This web development project was made by Team TLE during HackFusion, and we are using Next.js to build it.
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CityPulse 🏙️  
+Urban Infrastructure Incident Management Platform
 
-## Getting Started
-HACKFUSION_TLE
-reamdme updated here....
-Web Dev project
-hello
+CityPulse is a web-based platform that enables citizens to report civic infrastructure issues and ensures they are routed, prioritized, and resolved transparently by the appropriate municipal departments.
 
-First, run the development server:
+Built for hackathons with a focus on **accountability, reduced duplication, and clear workflows**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚩 Problem Statement
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Cities receive thousands of complaints related to infrastructure such as potholes, electricity failures, water leaks, and sanitation issues.  
+These complaints often suffer from:
+- Lack of clear ownership
+- Duplicate reports causing noise
+- Poor prioritization
+- Zero transparency for citizens
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+CityPulse solves this by enforcing **department-based routing**, **duplicate consolidation**, and **priority-driven resolution**, while keeping the entire process visible.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 💡 Solution Overview
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+CityPulse provides a structured workflow:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Citizens** report issues
+2. **Authorities** validate and assign them to the correct department
+3. **Department staff** resolve issues based on priority
+4. **Duplicate complaints** increase urgency instead of clutter
+5. **Public transparency** ensures accountability
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧠 Core Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 1. Department-Based Routing
+- Each issue category maps to a specific department
+- Authorities can confirm or reassign departments
+- Departments only see issues relevant to them
+
+### 2. Department-Specific Staff Workers
+- Staff workers belong to one department
+- Workers can only act on issues assigned to their department
+- Reduces errors and enforces responsibility
+
+### 3. Duplicate Complaint Handling
+- Complaints with the same problem type and location are grouped
+- Instead of creating new issues, a `requestCount` is increased
+- Converts repetition into measurable urgency
+
+### 4. Priority-Based Resolution
+Issues are prioritized using:
+- Number of requests (higher demand first)
+- Age of the issue (older issues first)
+
+This ensures fairness and effective resource allocation.
+
+### 5. Transparent Status Flow
+Each issue follows a strict lifecycle:
