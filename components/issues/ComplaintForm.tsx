@@ -227,10 +227,16 @@ export default function ComplaintForm() {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 rounded-lg bg-primary text-primary-foreground"
+                    className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-bold hover:opacity-90 transition-opacity disabled:opacity-70 flex items-center justify-center gap-2"
                 >
-                    {loading && <Loader2 className="animate-spin" />}
-                    Submit Report
+                    {loading ? (
+                        <>
+                            <Loader2 className="animate-spin" size={20} />
+                            Submitting...
+                        </>
+                    ) : (
+                        "Submit Report"
+                    )}
                 </button>
             </form>
         </div>
