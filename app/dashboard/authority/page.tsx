@@ -59,7 +59,7 @@ export default function AuthorityDashboard() {
         }
     };
 
-    const handleAssign = async (complaintId: string, staffId: string) => {
+    const handleAssign = async (complaintId: string, staffIds: string[]) => {
         try {
             const token = localStorage.getItem("token");
             const res = await fetch("/api/authority/complaints/assign", {
@@ -68,7 +68,7 @@ export default function AuthorityDashboard() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify({ complaintId, staffId })
+                body: JSON.stringify({ complaintId, staffIds })
             });
 
             if (!res.ok) throw new Error("Failed to assign staff");
