@@ -55,7 +55,7 @@ export default function StaffAllocationPage() {
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Staff Allocation</h1>
+                <h1 className="text-3xl font-bold tracking-tight">Staff Allocated</h1>
                 <p className="text-muted-foreground text-lg">
                     Monitor workload distribution for {user.department} Department.
                 </p>
@@ -83,7 +83,7 @@ export default function StaffAllocationPage() {
                                     <span className="text-sm font-medium">Active Tasks</span>
                                 </div>
                                 <span className={`text-xl font-bold ${staff.activeTasks === 0 ? "text-green-500" :
-                                        staff.activeTasks > 5 ? "text-red-500" : "text-primary"
+                                    staff.activeTasks > 5 ? "text-red-500" : "text-primary"
                                     }`}>
                                     {staff.activeTasks}
                                 </span>

@@ -37,7 +37,7 @@ export default function Sidebar({ role }: SidebarProps) {
 
     const authorityLinks = [
         { name: "Dashboard", href: "/dashboard/authority", icon: LayoutDashboard },
-        { name: "Staff Allocation", href: "/dashboard/authority/allocation", icon: Users },
+        { name: "Staff Allocated", href: "/dashboard/authority/allocation", icon: Users },
         { name: "Computed Reports", href: "/dashboard/authority/reports", icon: ClipboardCheck },
         { name: "Staff Work Done", href: "/dashboard/authority/work-done", icon: CheckSquare },
     ];

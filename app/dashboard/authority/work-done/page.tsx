@@ -12,10 +12,10 @@ interface ResolvedComplaint {
     proofUrl: string;
     resolutionNotes: string;
     updatedAt: string;
-    assignedTo?: {
+    assignedStaff?: {
         name: string;
         email: string;
-    };
+    }[];
 }
 
 export default function WorkDonePage() {
@@ -104,10 +104,14 @@ export default function WorkDonePage() {
                                     </div>
                                     <span className="font-medium text-green-700">Verified</span>
                                 </div>
-                                {complaint.assignedTo && (
-                                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                {complaint.assignedStaff && complaint.assignedStaff.length > 0 && (
+                                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground" title={complaint.assignedStaff.map(s => s.name).join(", ")}>
                                         <User size={12} />
-                                        <span className="truncate max-w-[100px]">{complaint.assignedTo.name}</span>
+                                        <span className="truncate max-w-[100px]">
+                                            {complaint.assignedStaff.length === 1
+                                                ? complaint.assignedStaff[0].name
+                                                : `${complaint.assignedStaff.length} Staff`}
+                                        </span>
                                     </div>
                                 )}
                             </div>
