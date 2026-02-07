@@ -33,7 +33,14 @@ export default function LoginPage() {
         return;
       }
       if (data.token) localStorage.setItem("token", data.token);
-      router.push("/dashboard");
+
+      if (data.role === 'authority') {
+        router.push("/dashboard/authority");
+      } else if (data.role === 'staff') {
+        router.push("/dashboard/staff");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err) {
       setError("Network error");
     } finally {
