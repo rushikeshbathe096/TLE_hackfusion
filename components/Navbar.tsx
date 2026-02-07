@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ThemeLogo } from "@/components/theme-logo";
 import UserMenu from "@/components/UserMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function Navbar() {
     return (
@@ -18,7 +19,10 @@ export default function Navbar() {
             </div>
 
             {/* Right: User Profile */}
-            <UserMenu />
+            <div className="flex items-center gap-4">
+                <LanguageSwitcher />
+                <UserMenu />
+            </div>
         </nav>
     );
 }

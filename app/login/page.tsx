@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+// @ts-ignore
+import DarkVeil from "@/components/DarkVeil";
+
+import { ThemeLogo } from "@/components/theme-logo";
 import { useUser } from "@/contexts/UserContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -15,7 +22,18 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
+
+  // Theme effects
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const { t } = useLanguage();
+
+  // User context
   const { user, refreshUser, loading: userLoading } = useUser();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Redirect if user is already logged in (and we have fetched user data)
@@ -124,14 +142,52 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen relative flex items-center justify-center text-foreground overflow-hidden bg-background transition-colors duration-300">
 
+      {/* Language Switcher - Top Right */}
+      <div className="absolute top-4 right-4 z-50">
+        <LanguageSwitcher />
+      </div>
+
+      {/* Dark Mode Background */}
+      {mounted && resolvedTheme === "dark" && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <DarkVeil
+            hueShift={35}
+            noiseIntensity={0}
+            scanlineIntensity={0}
+            speed={0.5}
+            scanlineFrequency={0}
+            warpAmount={0}
+            resolutionScale={1}
+          />
+        </div>
+      )}
+
+      {/* Light Mode Background */}
+      {mounted && resolvedTheme === "light" && (
+        <div className="absolute inset-0 z-0 pointer-events-none filter invert opacity-60">
+          <DarkVeil
+            hueShift={35}
+            noiseIntensity={0}
+            scanlineIntensity={0}
+            speed={0.5}
+            scanlineFrequency={0}
+            warpAmount={0}
+            resolutionScale={1}
+          />
+        </div>
+      )}
+
       {/* Login Form Container */}
       <div className="relative z-10 w-full max-w-md bg-card rounded-2xl p-8 shadow-xl ring-1 ring-border">
         {!isForgotPassword ? (
           <>
-            <h2 className="text-2xl font-bold mb-4 text-center">Sign in</h2>
+            <div className="flex flex-col items-center mb-6">
+              <ThemeLogo className="w-16 h-16 mb-2" />
+              <h2 className="text-2xl font-bold text-center">{t('auth.signin')}</h2>
+            </div>
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-sm text-muted-foreground mb-1">Email</label>
+                <label className="block text-sm text-muted-foreground mb-1">{t('auth.email')}</label>
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -142,7 +198,7 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="block text-sm text-muted-foreground mb-1">Password</label>
+                <label className="block text-sm text-muted-foreground mb-1">{t('auth.password')}</label>
                 <input
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -160,14 +216,14 @@ export default function LoginPage() {
                   className="btn bg-primary text-primary-foreground px-6 py-2 hover:opacity-90 transition"
                   disabled={loading}
                 >
-                  {loading ? "Please wait..." : "Sign in"}
+                  {loading ? "Please wait..." : t('auth.signin')}
                 </button>
                 <button
                   type="button"
                   onClick={() => router.push("/")}
                   className="text-sm text-muted-foreground hover:text-foreground"
                 >
-                  Cancel
+                  {t('auth.cancel')}
                 </button>
               </div>
 
@@ -177,27 +233,27 @@ export default function LoginPage() {
                   onClick={() => setIsForgotPassword(true)}
                   className="text-sm text-primary hover:underline"
                 >
-                  Forgot password?
+                  {t('auth.forgotPassword')}
                 </button>
               </div>
             </form>
 
             <div className="mt-4 text-center text-sm text-muted-foreground">
-              Don't have an account?{' '}
+              {t('auth.noAccount')}{' '}
               <button onClick={() => router.push('/signup')} className="underline ml-1 font-semibold text-foreground">
-                Create account
+                {t('auth.createAccount')}
               </button>
             </div>
           </>
         ) : (
           <>
-            <h2 className="text-2xl font-bold mb-4 text-center">Reset Password</h2>
+            <h2 className="text-2xl font-bold mb-4 text-center">{t('auth.resetPassword')}</h2>
             <form onSubmit={otpSent ? handleResetPassword : handleRequestOTP} className="space-y-4">
               {!otpSent ? (
                 <>
                   <p className="text-sm text-muted-foreground">Enter your email to receive an OTP</p>
                   <div>
-                    <label className="block text-sm text-muted-foreground mb-1">Email</label>
+                    <label className="block text-sm text-muted-foreground mb-1">{t('auth.email')}</label>
                     <input
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -213,7 +269,7 @@ export default function LoginPage() {
                     className="w-full btn bg-primary text-primary-foreground py-2 hover:opacity-90 transition"
                     disabled={loading}
                   >
-                    {loading ? "Sending..." : "Send OTP"}
+                    {loading ? t('auth.sending') : t('auth.sendOtp')}
                   </button>
                 </>
               ) : (
@@ -247,7 +303,7 @@ export default function LoginPage() {
                     className="w-full btn bg-primary text-primary-foreground py-2 hover:opacity-90 transition"
                     disabled={loading}
                   >
-                    {loading ? "Resetting..." : "Reset Password"}
+                    {loading ? t('auth.resetting') : t('auth.resetPassword')}
                   </button>
                 </>
               )}
@@ -256,7 +312,7 @@ export default function LoginPage() {
                 onClick={() => { setIsForgotPassword(false); setOtpSent(false); setOtp(""); setNewPassword(""); }}
                 className="text-sm text-muted-foreground text-center w-full hover:text-foreground"
               >
-                Back to login
+                {t('auth.backToLogin')}
               </button>
             </form>
           </>
