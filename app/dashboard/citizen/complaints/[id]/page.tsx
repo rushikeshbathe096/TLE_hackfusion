@@ -153,7 +153,7 @@ export default function ComplaintDetailPage() {
                             <div className="flex justify-between items-center">
                                 <span className="text-sm text-muted-foreground">Urgency</span>
                                 <span className={`font-bold ${complaint.priority === 'High' ? 'text-red-500' :
-                                        complaint.priority === 'Medium' ? 'text-amber-500' : 'text-green-500'
+                                    complaint.priority === 'Medium' ? 'text-amber-500' : 'text-green-500'
                                     }`}>{complaint.priority}</span>
                             </div>
                             <div className="flex justify-between items-center">
