@@ -34,7 +34,15 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: "Authority data invalid" }, { status: 400 });
         }
 
-        const complaints = await Complaint.find({ department: authority.department }).lean();
+        const complaints = await Complaint.find({ department: authority.department })
+            .populate('createdBy', 'name email phoneNumber address')
+            .sort({ createdAt: -1 }) // Sort by newest first
+            .lean();
+
+        // Limit to 10 for the "Recent Reports" view, but use all for stats calculation
+        // (Optimally we might want separate queries but carrying full list for stats is okay for MVP scale)
+        // Limit to 50 for the "Recent Reports" view to allow "See More"
+        const recentComplaints = complaints.slice(0, 50);
 
         // 1. Average Resolution Time
         const resolvedComplaints = complaints.filter((c: any) => c.status === 'RESOLVED');
@@ -48,14 +56,14 @@ export async function GET(req: Request) {
             ? (totalTime / resolvedComplaints.length) / (1000 * 60 * 60)
             : 0;
 
-        // 2. Complaints by Location (Top 5)
+        // 2. Complaints by Location
         const locationMap: Record<string, number> = {};
         complaints.forEach((c: any) => {
             locationMap[c.location] = (locationMap[c.location] || 0) + 1;
         });
         const topLocations = Object.entries(locationMap)
             .sort(([, a], [, b]) => b - a)
-            .slice(0, 5)
+            .slice(0, 20) // Return top 20 for "See More" functionality
             .map(([location, count]) => ({ location, count }));
 
         // 3. Priority Distribution
@@ -74,7 +82,8 @@ export async function GET(req: Request) {
             avgResolutionTimeHours: Math.round(avgResolutionTimeHours),
             topLocations,
             priorityDistribution,
-            totalComplaints: complaints.length
+            totalComplaints: complaints.length,
+            recentComplaints
         }, { status: 200 });
 
     } catch (e: any) {
