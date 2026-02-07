@@ -60,7 +60,7 @@ export default function Sidebar({ role }: SidebarProps) {
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="fixed top-6 left-6 z-50 p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all shadow-lg border border-white/10"
+                    className="fixed top-4 left-6 z-50 p-2 rounded-lg bg-background/50 text-foreground hover:bg-accent hover:text-accent-foreground backdrop-blur-md transition-all shadow-sm border border-border"
                     aria-label="Open Sidebar"
                 >
                     <Menu size={24} />

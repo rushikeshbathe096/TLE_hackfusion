@@ -1,15 +1,21 @@
+"use client";
+
 import { ThemeLogo } from "@/components/theme-logo";
 import { ModeToggle } from "@/components/toggle-theme";
-import Image from "next/image";
+import { useUser } from "@/contexts/UserContext";
+import Link from "next/link";
+import UserMenu from "@/components/UserMenu";
 
 export default function Home() {
+  const { user, loading } = useUser();
+
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
 
       {/* NAVBAR */}
       <header className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
         {/* Left: Logo / Name */}
-        <a
+        <Link
           href="/"
           className="flex items-center gap-3 hover:opacity-90 transition"
         >
@@ -17,23 +23,30 @@ export default function Home() {
           <span className="text-xl font-bold text-foreground tracking-tight">
             City Pulse
           </span>
-        </a>
+        </Link>
 
         {/* Right: Auth buttons */}
         <div className="flex items-center gap-4 text-sm">
           <ModeToggle />
-          <a
-            href="/login"
-            className="px-4 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition"
-          >
-            Sign in
-          </a>
-          <a
-            href="/signup"
-            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition shadow-sm"
-          >
-            Sign up
-          </a>
+
+          {!loading && user ? (
+            <UserMenu />
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="px-4 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/signup"
+                className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition shadow-sm"
+              >
+                Sign up
+              </Link>
+            </>
+          )}
         </div>
       </header>
 
@@ -50,12 +63,12 @@ export default function Home() {
 
         {/* CTA Button */}
         <div className="mt-10">
-          <a
-            href="/signup"
+          <Link
+            href={user ? "/dashboard" : "/signup"}
             className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-cyan-600 text-white font-semibold shadow-lg hover:bg-cyan-700 transition"
           >
             Raise a Problem
-          </a>
+          </Link>
         </div>
 
         {/* CARDS */}

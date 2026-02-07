@@ -1,7 +1,7 @@
 
 "use client";
 
-import { UserProvider, useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import { Loader2 } from "lucide-react";
@@ -14,9 +14,7 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <UserProvider>
-            <DashboardContent>{children}</DashboardContent>
-        </UserProvider>
+        <DashboardContent>{children}</DashboardContent>
     );
 }
 
