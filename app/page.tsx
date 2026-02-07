@@ -1,4 +1,5 @@
 import { ThemeLogo } from "@/components/theme-logo";
+import { SimpleCarousel } from "@/components/simple-carousel";
 import { ModeToggle } from "@/components/toggle-theme";
 import Image from "next/image";
 
@@ -38,7 +39,10 @@ export default function Home() {
       </header>
 
       {/* MAIN CONTENT */}
-      <main className="max-w-6xl mx-auto px-6 py-20 text-center">
+      <main className="max-w-6xl mx-auto px-6 py-12 text-center">
+
+        {/* Carousel */}
+        <SimpleCarousel />
 
         {/* Greeting */}
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">
