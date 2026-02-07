@@ -77,18 +77,27 @@ export default function Sidebar({ role }: SidebarProps) {
 
             {/* Sidebar */}
             <aside
-                className={`fixed left-0 top-0 h-full w-64 bg-slate-900/95 backdrop-blur-xl border-r border-white/10 flex flex-col z-50 transition-transform duration-300 ease-in-out shadow-2xl ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+                className={`fixed left-0 top-0 h-full w-64 bg-slate-900/95 backdrop-blur-xl border-r border-white/10 dark:bg-slate-900/95 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-900 border-r border-slate-200 dark:border-white/10 flex flex-col z-50 transition-transform duration-300 ease-in-out shadow-2xl ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
                 <div className="p-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-                        <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-amber-500/20">
-                            SP
+                        <div className="w-10 h-10 relative flex items-center justify-center">
+                            <img
+                                src="/city_logo2.png"
+                                alt="CityPulse Logo"
+                                className="w-full h-full object-contain dark:hidden"
+                            />
+                            <img
+                                src="/city_logo3.png"
+                                alt="CityPulse Logo"
+                                className="w-full h-full object-contain hidden dark:block"
+                            />
                         </div>
-                        <span className="font-bold text-lg text-white tracking-wide">CityPulse</span>
+                        <span className="font-bold text-lg text-slate-900 dark:text-white tracking-wide">CityPulse</span>
                     </Link>
                     <button
                         onClick={() => setIsOpen(false)}
-                        className="p-1 rounded-lg hover:bg-white/10 text-white/70 hover:text-white transition-colors"
+                        className="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-white/10 text-slate-500 dark:text-white/70 hover:text-slate-900 dark:hover:text-white transition-colors"
                     >
                         <X size={20} />
                     </button>
@@ -104,11 +113,11 @@ export default function Sidebar({ role }: SidebarProps) {
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${isActive
-                                    ? "bg-primary/10 text-primary font-medium"
-                                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                                    ? "bg-primary text-primary-foreground shadow-md dark:bg-primary/10 dark:text-primary dark:shadow-none font-medium"
+                                    : "text-slate-600 dark:text-muted-foreground hover:bg-white dark:hover:bg-accent hover:shadow-sm dark:hover:shadow-none hover:text-slate-900 dark:hover:text-foreground"
                                     }`}
                             >
-                                <Icon size={20} className={isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground transition-colors"} />
+                                <Icon size={20} className={isActive ? "text-primary-foreground dark:text-primary" : "text-slate-500 dark:text-muted-foreground group-hover:text-slate-900 dark:group-hover:text-foreground transition-colors"} />
                                 <span className="font-medium">{link.name}</span>
                             </Link>
                         );
