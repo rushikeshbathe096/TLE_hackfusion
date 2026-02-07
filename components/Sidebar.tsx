@@ -45,7 +45,7 @@ export default function Sidebar({ role }: SidebarProps) {
     const staffLinks = [
         { name: "Dashboard", href: "/dashboard/staff", icon: LayoutDashboard },
         { name: "Work Images", href: "/dashboard/staff/work-images", icon: ImageIcon },
-        { name: "Help", href: "/help", icon: HelpCircle },
+        { name: "Help", href: "/dashboard/staff/help", icon: HelpCircle },
     ];
 
     type LinkItem = { name: string; href: string; icon: React.ElementType };
