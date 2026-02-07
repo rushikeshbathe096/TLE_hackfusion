@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import PixelBlast from "@/components/PixelBlast";
+// import PixelBlast from "@/components/PixelBlast";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -111,66 +111,42 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center text-white overflow-hidden bg-gradient-to-b from-[#0f172a] to-[#001219]">
-      {/* PixelBlast Background */}
-      <div className="absolute inset-0 z-0 w-full h-full">
-        <PixelBlast
-          variant="square"
-          pixelSize={3}
-          color="#a3b2f0"
-          patternScale={2}
-          patternDensity={1}
-          pixelSizeJitter={0}
-          enableRipples
-          rippleSpeed={0.4}
-          rippleThickness={0.12}
-          rippleIntensityScale={1.5}
-          liquid={false}
-          liquidStrength={0.12}
-          liquidRadius={1.2}
-          liquidWobbleSpeed={5}
-          speed={0.5}
-          edgeFade={0.25}
-          transparent
-          className=""
-          style={{}}
-        />
-      </div>
+    <div className="min-h-screen relative flex items-center justify-center text-foreground overflow-hidden bg-background transition-colors duration-300">
 
       {/* Login Form Container */}
-      <div className="relative z-10 w-full max-w-md bg-white/6 rounded-2xl p-8 backdrop-blur-sm">
+      <div className="relative z-10 w-full max-w-md bg-card rounded-2xl p-8 shadow-xl ring-1 ring-border">
         {!isForgotPassword ? (
           <>
             <h2 className="text-2xl font-bold mb-4 text-center">Sign in</h2>
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-sm text-white/80 mb-1">Email</label>
+                <label className="block text-sm text-muted-foreground mb-1">Email</label>
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   required
-                  className="w-full rounded-md px-3 py-2 bg-white/5"
+                  className="w-full rounded-md px-3 py-2 bg-background border border-input focus:ring-2 focus:ring-ring focus:outline-none text-foreground"
                 />
               </div>
 
               <div>
-                <label className="block text-sm text-white/80 mb-1">Password</label>
+                <label className="block text-sm text-muted-foreground mb-1">Password</label>
                 <input
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   required
-                  className="w-full rounded-md px-3 py-2 bg-white/5"
+                  className="w-full rounded-md px-3 py-2 bg-background border border-input focus:ring-2 focus:ring-ring focus:outline-none text-foreground"
                 />
               </div>
 
-              {error && <div className="text-rose-400 text-sm">{error}</div>}
+              {error && <div className="text-destructive text-sm">{error}</div>}
 
               <div className="flex items-center justify-between">
                 <button
                   type="submit"
-                  className="btn bg-amber-400 text-amber-900 px-6 py-2"
+                  className="btn bg-primary text-primary-foreground px-6 py-2 hover:opacity-90 transition"
                   disabled={loading}
                 >
                   {loading ? "Please wait..." : "Sign in"}
@@ -178,7 +154,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => router.push("/")}
-                  className="text-sm text-white/80"
+                  className="text-sm text-muted-foreground hover:text-foreground"
                 >
                   Cancel
                 </button>
@@ -188,16 +164,16 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setIsForgotPassword(true)}
-                  className="text-sm text-amber-400 hover:underline"
+                  className="text-sm text-primary hover:underline"
                 >
                   Forgot password?
                 </button>
               </div>
             </form>
 
-            <div className="mt-4 text-center text-sm text-white/80">
+            <div className="mt-4 text-center text-sm text-muted-foreground">
               Don't have an account?{' '}
-              <button onClick={() => router.push('/signup')} className="underline ml-1">
+              <button onClick={() => router.push('/signup')} className="underline ml-1 font-semibold text-foreground">
                 Create account
               </button>
             </div>
@@ -208,22 +184,22 @@ export default function LoginPage() {
             <form onSubmit={otpSent ? handleResetPassword : handleRequestOTP} className="space-y-4">
               {!otpSent ? (
                 <>
-                  <p className="text-sm text-white/70">Enter your email to receive an OTP</p>
+                  <p className="text-sm text-muted-foreground">Enter your email to receive an OTP</p>
                   <div>
-                    <label className="block text-sm text-white/80 mb-1">Email</label>
+                    <label className="block text-sm text-muted-foreground mb-1">Email</label>
                     <input
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       type="email"
                       required
-                      className="w-full rounded-md px-3 py-2 bg-white/5"
+                      className="w-full rounded-md px-3 py-2 bg-background border border-input focus:ring-2 focus:ring-ring focus:outline-none text-foreground"
                     />
                   </div>
-                  {error && <div className="text-rose-400 text-sm">{error}</div>}
-                  {success && <div className="text-green-400 text-sm">{success}</div>}
+                  {error && <div className="text-destructive text-sm">{error}</div>}
+                  {success && <div className="text-green-600 text-sm">{success}</div>}
                   <button
                     type="submit"
-                    className="w-full btn bg-amber-400 text-amber-900 py-2"
+                    className="w-full btn bg-primary text-primary-foreground py-2 hover:opacity-90 transition"
                     disabled={loading}
                   >
                     {loading ? "Sending..." : "Send OTP"}
@@ -231,33 +207,33 @@ export default function LoginPage() {
                 </>
               ) : (
                 <>
-                  <p className="text-sm text-white/70">Enter OTP and new password</p>
+                  <p className="text-sm text-muted-foreground">Enter OTP and new password</p>
                   <div>
-                    <label className="block text-sm text-white/80 mb-1">OTP (6 digits)</label>
+                    <label className="block text-sm text-muted-foreground mb-1">OTP (6 digits)</label>
                     <input
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
                       type="text"
                       maxLength={6}
                       required
-                      className="w-full rounded-md px-3 py-2 bg-white/5"
+                      className="w-full rounded-md px-3 py-2 bg-background border border-input focus:ring-2 focus:ring-ring focus:outline-none text-foreground"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-white/80 mb-1">New Password</label>
+                    <label className="block text-sm text-muted-foreground mb-1">New Password</label>
                     <input
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       type="password"
                       required
-                      className="w-full rounded-md px-3 py-2 bg-white/5"
+                      className="w-full rounded-md px-3 py-2 bg-background border border-input focus:ring-2 focus:ring-ring focus:outline-none text-foreground"
                     />
                   </div>
-                  {error && <div className="text-rose-400 text-sm">{error}</div>}
-                  {success && <div className="text-green-400 text-sm">{success}</div>}
+                  {error && <div className="text-destructive text-sm">{error}</div>}
+                  {success && <div className="text-green-600 text-sm">{success}</div>}
                   <button
                     type="submit"
-                    className="w-full btn bg-amber-400 text-amber-900 py-2"
+                    className="w-full btn bg-primary text-primary-foreground py-2 hover:opacity-90 transition"
                     disabled={loading}
                   >
                     {loading ? "Resetting..." : "Reset Password"}
@@ -267,7 +243,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => { setIsForgotPassword(false); setOtpSent(false); setOtp(""); setNewPassword(""); }}
-                className="text-sm text-white/80 text-center w-full"
+                className="text-sm text-muted-foreground text-center w-full hover:text-foreground"
               >
                 Back to login
               </button>

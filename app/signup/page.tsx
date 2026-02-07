@@ -58,100 +58,100 @@ const SignUp = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0f172a] to-[#001219] text-white">
-            <div className="w-full max-w-md bg-white/6 rounded-2xl p-8">
+        <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition-colors duration-300">
+            <div className="w-full max-w-md bg-card rounded-2xl p-8 shadow-xl ring-1 ring-border">
                 <h2 className="text-2xl font-bold mb-4 text-center">Create an account</h2>
                 <form onSubmit={handleSignUp} className="space-y-4">
-                    <div className="text-sm text-white/80 text-center">
+                    <div className="text-sm text-muted-foreground text-center">
                         Already have an account?{' '}
-                        <button type="button" onClick={() => router.push('/login')} className="underline ml-1">
+                        <button type="button" onClick={() => router.push('/login')} className="underline ml-1 font-semibold text-foreground">
                             Sign in
                         </button>
                     </div>
 
                     <div>
-                        <label className="block text-sm text-white/80 mb-1">Full name</label>
+                        <label className="block text-sm text-muted-foreground mb-1">Full name</label>
                         <input
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             type="text"
                             required
-                            className="w-full rounded-md px-3 py-2 bg-white/5"
+                            className="w-full rounded-md px-3 py-2 bg-background border border-input focus:ring-2 focus:ring-ring focus:outline-none text-foreground"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm text-white/80 mb-1">Email</label>
+                        <label className="block text-sm text-muted-foreground mb-1">Email</label>
                         <input
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             type="email"
                             required
-                            className="w-full rounded-md px-3 py-2 bg-white/5"
+                            className="w-full rounded-md px-3 py-2 bg-background border border-input focus:ring-2 focus:ring-ring focus:outline-none text-foreground"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm text-white/80 mb-1">Password</label>
+                        <label className="block text-sm text-muted-foreground mb-1">Password</label>
                         <input
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             type="password"
                             required
-                            className="w-full rounded-md px-3 py-2 bg-white/5"
+                            className="w-full rounded-md px-3 py-2 bg-background border border-input focus:ring-2 focus:ring-ring focus:outline-none text-foreground"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm text-white/80 mb-1">Role</label>
+                        <label className="block text-sm text-muted-foreground mb-1">Role</label>
                         <select
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
-                            className="w-full rounded-md px-3 py-2 bg-white/5 text-white"
+                            className="w-full rounded-md px-3 py-2 bg-background border border-input text-foreground focus:ring-2 focus:ring-ring focus:outline-none"
                         >
-                            <option value="citizen" className="bg-[#0f172a]">Citizen</option>
-                            <option value="authority" className="bg-[#0f172a]">Authority</option>
-                            <option value="staff" className="bg-[#0f172a]">Field Staff</option>
+                            <option value="citizen">Citizen</option>
+                            <option value="authority">Authority</option>
+                            <option value="staff">Field Staff</option>
                         </select>
                     </div>
 
                     {(role === 'authority' || role === 'staff') && (
                         <>
                             <div>
-                                <label className="block text-sm text-white/80 mb-1">Department</label>
+                                <label className="block text-sm text-muted-foreground mb-1">Department</label>
                                 <select
                                     value={department}
                                     onChange={(e) => setDepartment(e.target.value)}
-                                    className="w-full rounded-md px-3 py-2 bg-white/5 text-white"
+                                    className="w-full rounded-md px-3 py-2 bg-background border border-input text-foreground focus:ring-2 focus:ring-ring focus:outline-none"
                                 >
-                                    <option value="Road" className="bg-[#0f172a]">Road</option>
-                                    <option value="Water" className="bg-[#0f172a]">Water</option>
-                                    <option value="Electrical" className="bg-[#0f172a]">Electrical</option>
-                                    <option value="Sanitation" className="bg-[#0f172a]">Sanitation</option>
+                                    <option value="Road">Road</option>
+                                    <option value="Water">Water</option>
+                                    <option value="Electrical">Electrical</option>
+                                    <option value="Sanitation">Sanitation</option>
                                 </select>
                             </div>
 
                             <div>
-                                <label className="block text-sm text-white/80 mb-1">Government ID (Upload)</label>
+                                <label className="block text-sm text-muted-foreground mb-1">Government ID (Upload)</label>
                                 <input
                                     type="file"
                                     accept="image/*,application/pdf"
                                     onChange={(e) => setFile(e.target.files?.[0] || null)}
                                     required
-                                    className="w-full rounded-md px-3 py-2 bg-white/5 text-white cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-amber-400 file:text-amber-900 hover:file:bg-amber-500"
+                                    className="w-full rounded-md px-3 py-2 bg-background border border-input text-muted-foreground cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:opacity-90"
                                 />
                             </div>
                         </>
                     )}
 
-                    {error && <div className="text-rose-400 text-sm">{error}</div>}
-                    {success && <div className="text-green-400 text-sm">{success}</div>}
+                    {error && <div className="text-destructive text-sm">{error}</div>}
+                    {success && <div className="text-green-600 text-sm">{success}</div>}
 
                     <div className="flex items-center justify-between">
-                        <button type="submit" className="btn bg-amber-400 text-amber-900 px-6 py-2" disabled={loading}>
+                        <button type="submit" className="btn bg-primary text-primary-foreground px-6 py-2 hover:opacity-90 transition" disabled={loading}>
                             {loading ? 'Please wait...' : 'Create account'}
                         </button>
-                        <button type="button" onClick={() => router.push('/')} className="text-sm text-white/80">
+                        <button type="button" onClick={() => router.push('/')} className="text-sm text-muted-foreground hover:text-foreground">
                             Cancel
                         </button>
                     </div>
