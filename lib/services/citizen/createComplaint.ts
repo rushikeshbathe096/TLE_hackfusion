@@ -35,10 +35,11 @@ export async function createComplaint(data: CreateComplaintData) {
         }
 
         const newFrequency = (existingDetails.frequency || 1) + 1;
-        let newPriority = existingDetails.priority;
+        let newPriority = existingDetails.priority || 'Low'; // Default to Low if missing
 
-        if (newFrequency > 15) newPriority = 'High';
-        else if (newFrequency > 5) newPriority = 'Medium';
+        // Dynamic Priority Formula (Thresholds: >3 Medium, >8 High)
+        if (newFrequency > 8) newPriority = 'High';
+        else if (newFrequency > 3) newPriority = 'Medium';
 
         const updatedComplaint = await Complaint.findByIdAndUpdate(
             duplicateId,

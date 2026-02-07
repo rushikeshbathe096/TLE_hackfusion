@@ -16,5 +16,13 @@ export async function listMyComplaints(userId: string) {
         .sort({ createdAt: -1 })
         .lean();
 
-    return complaints;
+    return complaints.map((c: any) => {
+        if (!c.priority) {
+            const freq = c.frequency || 1;
+            if (freq > 8) c.priority = 'High';
+            else if (freq > 3) c.priority = 'Medium';
+            else c.priority = 'Low';
+        }
+        return c;
+    });
 }

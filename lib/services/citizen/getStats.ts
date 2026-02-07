@@ -1,13 +1,13 @@
-
 import Complaint from "@/lib/models/Complaint";
 import { connectDB } from "@/lib/mongodb";
+import mongoose from "mongoose";
 
 export async function getCitizenStats(userId: string) {
     await connectDB();
 
     // Aggregation to get counts by status
     const stats = await Complaint.aggregate([
-        { $match: { userId: new Object(userId) } }, // Ensure ObjectId if stored as such, or string if stored as string. Model uses ObjectId ref.
+        { $match: { createdBy: new mongoose.Types.ObjectId(userId) } },
         {
             $group: {
                 _id: "$status",
@@ -25,10 +25,11 @@ export async function getCitizenStats(userId: string) {
 
     stats.forEach(item => {
         totalReports += item.count;
-        if (item._id === 'Resolved') resolved = item.count;
-        if (item._id === 'Pending') pending = item.count;
-        if (item._id === 'In Progress') inProgress = item.count;
-        if (item._id === 'Rejected') rejected = item.count;
+        // Match ENUM values from model: OPEN, IN_PROGRESS, ON_HOLD, RESOLVED
+        if (item._id === 'RESOLVED') resolved = item.count;
+        if (item._id === 'OPEN') pending = item.count;
+        if (item._id === 'IN_PROGRESS') inProgress = item.count;
+        if (item._id === 'ON_HOLD') rejected = item.count; // Mapping ON_HOLD to rejected/pending bucket if needed, or just track it.
     });
 
     // Calculate "Points" (Gamification MVP)
