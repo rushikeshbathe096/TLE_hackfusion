@@ -14,7 +14,14 @@ const UserSchema = new mongoose.Schema({
     enum: ['Road', 'Water', 'Electrical', 'Sanitation'],
     required: function (this: any) { return this.role === 'authority' || this.role === 'staff'; }
   },
-  govtIdUrl: { type: String },
+
+  // Profile Fields
+  dob: { type: Date },
+  phoneNumber: { type: String },
+  address: { type: String },
+  profileImage: { type: String },
+  govtIdUrl: { type: String }, // For staff/authority
+
   isVerified: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });

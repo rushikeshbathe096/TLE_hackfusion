@@ -12,7 +12,11 @@ interface User {
     createdAt: string;
     isVerified?: boolean;
     department?: string;
-    // Add other user properties as needed
+    dob?: string;
+    address?: string;
+    phoneNumber?: string;
+    profileImage?: string;
+    govtIdUrl?: string;
 }
 
 interface UserContextType {
