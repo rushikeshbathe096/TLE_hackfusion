@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Sidebar from "@/components/Sidebar";
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
@@ -42,25 +43,13 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#001e3c] to-[#001219] text-white">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 bg-white/5 backdrop-blur-sm border-r border-white/10 p-6">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center font-bold">SP</div>
-          <span className="font-bold text-lg">SPIT HF</span>
-        </div>
-        <nav className="space-y-2">
-          <a href="/dashboard" className="block px-4 py-3 rounded-lg bg-white/10 text-white font-medium">Dashboard</a>
-          <a href="#" className="block px-4 py-3 rounded-lg text-white/70 hover:bg-white/5">Profile</a>
-          <a href="#" className="block px-4 py-3 rounded-lg text-white/70 hover:bg-white/5">Settings</a>
-          <a href="#" className="block px-4 py-3 rounded-lg text-white/70 hover:bg-white/5">Help</a>
-        </nav>
-        <button onClick={handleLogout} className="w-full mt-8 py-2 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-medium">Logout</button>
-      </aside>
+      <Sidebar role="citizen" onLogout={handleLogout} />
 
       {/* Main Content */}
-      <main className="ml-64 p-8">
+      <main className="p-8 pt-24 pl-8 md:pl-20">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold">Welcome back, {user?.name || "User"}! 👋</h1>
+          <h1 className="text-4xl font-bold">Welcome back, {user?.name || "User"}! </h1>
           <p className="text-white/60 mt-2">{user?.email}</p>
         </div>
 
