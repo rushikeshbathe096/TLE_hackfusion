@@ -77,7 +77,7 @@ export default function Sidebar({ role }: SidebarProps) {
 
             {/* Sidebar */}
             <aside
-                className={`fixed left-0 top-0 h-full w-64 backdrop-blur-xl border-r border-slate-200 dark:border-white/10 flex flex-col z-50 transition-transform duration-300 ease-in-out shadow-2xl bg-gradient-to-b from-blue-50 to-white dark:from-gray-800 dark:to-gray-950 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+                className={`fixed left-0 top-0 h-full w-64 backdrop-blur-xl border-r border-slate-200 dark:border-white/10 flex flex-col z-50 transition-transform duration-300 ease-in-out shadow-2xl bg-gradient-to-b from-blue-50 to-white dark:from-zinc-800 dark:to-zinc-950 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
                 <div className="p-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
@@ -113,11 +113,11 @@ export default function Sidebar({ role }: SidebarProps) {
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${isActive
-                                    ? "bg-primary text-primary-foreground shadow-md dark:bg-gray-100 dark:text-black dark:shadow-none font-medium"
-                                    : "text-slate-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 hover:shadow-sm dark:hover:shadow-none hover:text-slate-900 dark:hover:text-gray-100"
+                                    ? "bg-primary text-primary-foreground shadow-md dark:bg-white dark:text-black dark:shadow-none font-medium"
+                                    : "text-slate-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700/50 hover:shadow-sm dark:hover:shadow-none hover:text-slate-900 dark:hover:text-white"
                                     }`}
                             >
-                                <Icon size={20} className={isActive ? "text-primary-foreground dark:text-black" : "text-slate-500 dark:text-gray-400 group-hover:text-slate-900 dark:group-hover:text-gray-100 transition-colors"} />
+                                <Icon size={20} className={isActive ? "text-primary-foreground dark:text-black" : "text-slate-500 dark:text-zinc-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors"} />
                                 <span className="font-medium">{link.name}</span>
                             </Link>
                         );
