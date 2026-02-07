@@ -33,8 +33,8 @@ export default function Navbar() {
         <nav className="fixed top-0 left-0 right-0 h-16 bg-background/95 backdrop-blur-xl border-b border-border z-40 flex items-center justify-between px-4 md:px-8 shadow-sm">
 
             {/* Left: Logo and Name */}
-            <div className="flex items-center gap-3 ml-14 md:ml-0 transition-all duration-300">
-                <Link href="/dashboard" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <div className="flex items-center gap-3 ml-20 md:ml-0 transition-all duration-300">
+                <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                     <ThemeLogo className="w-8 h-8" />
                     <span className="font-bold text-lg text-foreground tracking-wide hidden sm:block">CityPulse</span>
                 </Link>

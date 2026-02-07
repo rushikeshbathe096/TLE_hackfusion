@@ -56,15 +56,11 @@ export default function Sidebar({ role }: SidebarProps) {
 
     return (
         <>
-            {/* Hamburger Toggle Button - Mobile Only or when sidebar is hidden */}
-            {/* Note: In previous layout sidebar was fixed. With the new Navbar, we might want 
-                the toggle to be part of the Navbar or floating. 
-                For now, keeping floating but adjusting z-index and color.
-            */}
+            {/* Hamburger Toggle Button - Mobile & Desktop */}
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="fixed top-20 left-4 z-50 p-2 rounded-lg bg-card border border-border text-foreground hover:bg-accent shadow-md md:hidden"
+                    className="fixed top-6 left-6 z-50 p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all shadow-lg border border-white/10"
                     aria-label="Open Sidebar"
                 >
                     <Menu size={24} />
@@ -74,27 +70,25 @@ export default function Sidebar({ role }: SidebarProps) {
             {/* Overlay */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm transition-opacity md:hidden"
+                    className="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm transition-opacity"
                     onClick={() => setIsOpen(false)}
                 />
             )}
 
-
             {/* Sidebar */}
-            {/* 
-                Desktop: always visible (translate-x-0)
-                Mobile: controlled by isOpen
-            */}
             <aside
-                className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-card border-r border-border flex flex-col z-30 transition-transform duration-300 ease-in-out shadow-sm
-                ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-                `}
+                className={`fixed left-0 top-0 h-full w-64 bg-slate-900/95 backdrop-blur-xl border-r border-white/10 flex flex-col z-50 transition-transform duration-300 ease-in-out shadow-2xl ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
-                <div className="p-4 flex items-center justify-between md:hidden">
-                    <span className="font-bold text-lg">Menu</span>
+                <div className="p-6 flex items-center justify-between">
+                    <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
+                        <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-amber-500/20">
+                            SP
+                        </div>
+                        <span className="font-bold text-lg text-white tracking-wide">CityPulse</span>
+                    </Link>
                     <button
                         onClick={() => setIsOpen(false)}
-                        className="p-1 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+                        className="p-1 rounded-lg hover:bg-white/10 text-white/70 hover:text-white transition-colors"
                     >
                         <X size={20} />
                     </button>

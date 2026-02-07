@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const SignUp = () => {
@@ -14,6 +14,13 @@ const SignUp = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            router.push("/dashboard");
+        }
+    }, [router]);
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
