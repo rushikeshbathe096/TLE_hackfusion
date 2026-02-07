@@ -23,16 +23,45 @@ export default function ComplaintForm() {
 
     const departments = ["Road", "Water", "Electrical", "Sanitation"];
 
+    const [locationLoading, setLocationLoading] = useState(false);
+
     const handleLocationClick = () => {
-        const mockLocations = [
-            "123 Main St, Central District",
-            "Near City Park, North Road",
-            "456 Market Ave, West End",
-            "Opposite Railway Station, East Zone",
-        ];
-        const randomLoc =
-            mockLocations[Math.floor(Math.random() * mockLocations.length)];
-        setFormData((prev) => ({ ...prev, location: randomLoc }));
+        if (!navigator.geolocation) {
+            setMessage({ type: "error", text: "Geolocation is not supported by your browser." });
+            return;
+        }
+
+        setLocationLoading(true);
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+                try {
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                    );
+                    const data = await response.json();
+
+                    if (data && data.display_name) {
+                        setFormData((prev) => ({ ...prev, location: data.display_name }));
+                        setMessage({ type: "success", text: "Location fetched successfully!" });
+                    } else {
+                        setFormData((prev) => ({ ...prev, location: `${latitude}, ${longitude}` }));
+                        setMessage({ type: "info", text: "Address not found, using coordinates." });
+                    }
+                } catch (error) {
+                    console.error("Geocoding error:", error);
+                    setFormData((prev) => ({ ...prev, location: `${latitude}, ${longitude}` }));
+                    setMessage({ type: "info", text: "Could not fetch address, using coordinates." });
+                } finally {
+                    setLocationLoading(false);
+                }
+            },
+            (error) => {
+                console.error("Geolocation error:", error);
+                setMessage({ type: "error", text: "Unable to retrieve your location. Please allow access." });
+                setLocationLoading(false);
+            }
+        );
     };
 
     const handleImageChange = (
@@ -101,6 +130,10 @@ export default function ComplaintForm() {
                     imageUrl: "",
                 });
                 router.refresh();
+                // Redirect to dashboard after short delay to let them see success
+                setTimeout(() => {
+                    router.push("/dashboard");
+                }, 1000);
             }
         } catch (err: any) {
             setMessage({ type: "error", text: err.message });
@@ -169,10 +202,11 @@ export default function ComplaintForm() {
                         <button
                             type="button"
                             onClick={handleLocationClick}
-                            className="p-2 rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+                            disabled={locationLoading}
+                            className="p-2 rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors disabled:opacity-50"
                             title="Use Current Location"
                         >
-                            <MapPin size={20} />
+                            {locationLoading ? <Loader2 size={20} className="animate-spin" /> : <MapPin size={20} />}
                         </button>
                     </div>
                 </div>
