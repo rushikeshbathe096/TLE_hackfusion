@@ -66,6 +66,8 @@ export default function StaffDashboard() {
     if (userLoading) return <div className="min-h-[50vh] flex items-center justify-center"><Loader2 className="animate-spin" /></div>;
     if (!user || user.role !== 'staff') return null;
 
+    const isProfileComplete = user?.name && user?.email && user?.dob && user?.profileImage && user?.govtIdUrl;
+
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex justify-between items-center">
@@ -75,7 +77,7 @@ export default function StaffDashboard() {
                 </button>
             </div>
 
-            {!user?.isVerified && (
+            {!user?.isVerified && !isProfileComplete && (
                 <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-xl text-amber-600 dark:text-amber-400 flex items-start gap-3">
                     <span className="text-xl">⚠️</span>
                     <div>

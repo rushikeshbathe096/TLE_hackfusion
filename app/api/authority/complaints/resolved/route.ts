@@ -39,7 +39,7 @@ export async function GET(req: Request) {
             status: 'RESOLVED',
             proofUrl: { $exists: true, $ne: "" }
         })
-            .populate("assignedTo", "name email")
+            .populate("assignedStaff", "name email")
             .sort({ updatedAt: -1 })
             .lean();
 
