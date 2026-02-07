@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import ComplaintList from "@/components/issues/ComplaintList";
 import { useUser } from "@/contexts/UserContext";
 // @ts-ignore
@@ -8,6 +9,8 @@ import Galaxy from "@/components/Galaxy";
 
 export default function DashboardPage() {
   const { user } = useUser();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [stats, setStats] = useState({
     totalReports: 0,
     resolved: 0,
@@ -15,6 +18,7 @@ export default function DashboardPage() {
   });
 
   useEffect(() => {
+    setMounted(true);
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -36,15 +40,17 @@ export default function DashboardPage() {
 
   if (!user) return null;
 
+  const isLight = mounted && resolvedTheme === 'light';
+
   return (
     <div className="relative min-h-[calc(100vh-4rem)]">
-      <div className="absolute inset-0 z-0 overflow-hidden rounded-xl border border-white/10">
+      <div className={`fixed inset-0 z-0 pointer-events-none ${isLight ? 'opacity-30' : 'opacity-100'}`}>
         <Galaxy
           starSpeed={0.5}
           density={1}
-          hueShift={140}
+          hueShift={isLight ? 200 : 140} // Shift towards blue for light mode
           speed={1}
-          glowIntensity={0.3}
+          glowIntensity={isLight ? 0.1 : 0.3} // Reduce glow in light mode
           saturation={0}
           mouseRepulsion
           repulsionStrength={2}
