@@ -123,9 +123,16 @@ export default function ProfilePage() {
             if (!res.ok) throw new Error("Failed to update profile");
 
             await refreshUser(); // Update context
-            setSuccessMsg("Profile updated successfully!");
+            setSuccessMsg("Profile updated successfully! Redirecting...");
             setIsEditing(false); // Switch back to view mode
             setInitialData(formData); // Update initial data
+
+            // Redirect to dashboard based on role
+            setTimeout(() => {
+                if (user.role === 'citizen') router.push('/dashboard/citizen');
+                else if (user.role === 'staff') router.push('/dashboard/staff');
+                else if (user.role === 'authority') router.push('/dashboard/authority');
+            }, 1000);
 
         } catch (err: any) {
             setErrorMsg(err.message);

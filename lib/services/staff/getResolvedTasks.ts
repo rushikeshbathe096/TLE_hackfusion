@@ -9,7 +9,7 @@ export async function getResolvedTasks(staffId: string) {
         // Find resolved complaints assigned to this staff member
         // Ideally we only want ones with proofUrl, but lets get all resolved for now
         const tasks = await Complaint.find({
-            assignedTo: staffId,
+            assignedStaff: staffId,
             status: 'RESOLVED'
         })
             .sort({ updatedAt: -1 })

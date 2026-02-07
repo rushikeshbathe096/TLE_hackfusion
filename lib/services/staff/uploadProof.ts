@@ -1,5 +1,5 @@
 
-import { connectToDatabase } from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
 import Complaint from "@/lib/models/Complaint";
 
 interface UploadProofParams {
@@ -11,7 +11,7 @@ interface UploadProofParams {
 
 export async function uploadProof({ taskId, staffId, proofUrl, resolutionNotes }: UploadProofParams) {
     try {
-        await connectToDatabase();
+        await connectDB();
 
         const complaint = await Complaint.findById(taskId);
 
@@ -19,24 +19,33 @@ export async function uploadProof({ taskId, staffId, proofUrl, resolutionNotes }
             throw new Error("Complaint not found");
         }
 
-        // Verify assignment
-        if (complaint.assignedTo.toString() !== staffId) {
+        // Verify assignment (check if staffId is in assignedStaff array)
+        const isAssigned = complaint.assignedStaff?.some((id: any) => id.toString() === staffId);
+
+        if (!isAssigned) {
             throw new Error("Unauthorized: Task not assigned to you");
         }
 
-        complaint.proofUrl = proofUrl;
-        if (resolutionNotes) {
-            complaint.resolutionNotes = resolutionNotes;
-        }
+        const updatedComplaint = await Complaint.findByIdAndUpdate(
+            taskId,
+            {
+                $set: {
+                    proofUrl: proofUrl,
+                    resolutionNotes: resolutionNotes,
+                    status: 'RESOLVED'
+                },
+                $push: {
+                    statusHistory: {
+                        status: 'RESOLVED',
+                        changedBy: staffId,
+                        notes: `Work resolved with proof.`
+                    }
+                }
+            },
+            { new: true, runValidators: false }
+        );
 
-        // Auto-resolve if proof is uploaded? Or just update fields. 
-        // User requirements say "Upload proof ... Add resolution notes", usually implies marking resolved or part of resolution.
-        // For now, just update fields. User can set status to RESOLVED separately or we could mandate it.
-        // Let's assume this is just for updating the proof details.
-
-        await complaint.save();
-
-        return JSON.parse(JSON.stringify(complaint));
+        return JSON.parse(JSON.stringify(updatedComplaint));
     } catch (error: any) {
         throw new Error(`Failed to upload proof: ${error.message}`);
     }

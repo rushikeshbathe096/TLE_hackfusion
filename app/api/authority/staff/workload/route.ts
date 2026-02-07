@@ -42,7 +42,7 @@ export async function GET(req: Request) {
         // Calculate workload for each
         const workloadData = await Promise.all(staffMembers.map(async (staff) => {
             const activeCount = await Complaint.countDocuments({
-                assignedTo: staff._id,
+                assignedStaff: staff._id,
                 status: { $in: ['OPEN', 'IN_PROGRESS', 'ON_HOLD'] }
             });
             return {

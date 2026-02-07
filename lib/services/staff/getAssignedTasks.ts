@@ -6,9 +6,9 @@ export async function getAssignedTasks(staffId: string) {
     try {
         await connectDB();
 
-        // Find complaints assigned to this staff member
+        // Find complaints assigned to this staff member (using assignedStaff array)
         // Sort by updatedAt descending (newest activity first)
-        const tasks = await Complaint.find({ assignedTo: staffId })
+        const tasks = await Complaint.find({ assignedStaff: staffId })
             .sort({ updatedAt: -1 })
             .populate('createdBy', 'name email') // Optional: show citizen info
             .lean();

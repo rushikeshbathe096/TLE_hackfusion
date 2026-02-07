@@ -162,80 +162,80 @@ export default function WorkImagesPage() {
             {isUploading && (
                 <div className="bg-card border border-border p-6 rounded-xl shadow-lg mb-8 animate-in slide-in-from-top-4">
                     <h3 className="text-lg font-semibold mb-4">Upload Proof of Work</h3>
-                    <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label className="block text-sm font-medium mb-1">Select Task</label>
-                            <select
-                                className="w-full p-2 rounded-md border border-input bg-background"
-                                value={selectedTaskId}
-                                onChange={(e) => setSelectedTaskId(e.target.value)}
-                                required
-                            >
-                                <option value="">-- Select a pending task --</option>
-                                {assignedTasks.map(t => (
-                                    <option key={t._id} value={t._id}>
-                                        {t.title} ({t.location})
-                                    </option>
-                                ))}
-                            </select>
+                            <label className="block text-sm font-semibold mb-2 text-foreground">Select Task</label>
+                            <div className="relative">
+                                <select
+                                    className="w-full p-3 pl-4 rounded-xl border border-input bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none shadow-sm font-medium"
+                                    value={selectedTaskId}
+                                    onChange={(e) => setSelectedTaskId(e.target.value)}
+                                    required
+                                >
+                                    <option value="" disabled>-- Select a pending task --</option>
+                                    {assignedTasks.map(t => (
+                                        <option key={t._id} value={t._id}>
+                                            {t.title} — {t.location}
+                                        </option>
+                                    ))}
+                                </select>
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+                            </div>
                             {assignedTasks.length === 0 && (
-                                <p className="text-xs text-amber-500 mt-1">No pending tasks found.</p>
+                                <p className="text-xs text-amber-500 mt-2 font-medium flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 block"></span>
+                                    No pending tasks found.
+                                </p>
                             )}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium mb-1">Proof Image</label>
-
-                            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-primary transition-colors cursor-pointer relative bg-gray-50 hover:bg-gray-100"
-                                onClick={() => document.getElementById('file-upload')?.click()}>
-
+                            <label className="block text-sm font-semibold mb-2 text-foreground">Proof Image</label>
+                            <div
+                                className={`mt-1 flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-xl transition-all cursor-pointer relative group ${proofFile ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-primary hover:bg-primary/5'
+                                    }`}
+                                onClick={() => document.getElementById('file-upload')?.click()}
+                            >
                                 {proofFile ? (
-                                    <div className="text-center w-full">
-                                        <p className="text-sm text-green-600 font-medium mb-2 truncate max-w-[200px] mx-auto">
-                                            Selected: {proofFile.name}
+                                    <div className="text-center w-full relative z-10">
+                                        <div className="mb-3 relative group-hover:scale-105 transition-transform">
+                                            <img
+                                                src={URL.createObjectURL(proofFile)}
+                                                alt="Preview"
+                                                className="h-40 mx-auto object-cover rounded-lg shadow-md border border-border"
+                                            />
+                                        </div>
+                                        <p className="text-sm text-green-600 font-bold truncate max-w-[200px] mx-auto bg-green-50 px-2 py-1 rounded inline-block">
+                                            {proofFile.name}
                                         </p>
-                                        <img
-                                            src={URL.createObjectURL(proofFile)}
-                                            alt="Preview"
-                                            className="h-32 mx-auto object-cover rounded-lg shadow-sm"
-                                        />
                                         <button
                                             type="button"
-                                            className="text-xs text-red-500 mt-2 underline"
+                                            className="block mx-auto mt-2 text-xs text-red-500 font-bold hover:underline"
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setProofFile(null);
                                             }}
                                         >
-                                            Remove
+                                            Remove Image
                                         </button>
                                     </div>
                                 ) : (
-                                    <div className="space-y-1 text-center">
-                                        <svg
-                                            className="mx-auto h-12 w-12 text-gray-400"
-                                            stroke="currentColor"
-                                            fill="none"
-                                            viewBox="0 0 48 48"
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                strokeWidth={2}
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                        </svg>
-                                        <div className="flex text-sm text-gray-600 justify-center">
-                                            <span className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary/90 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                                <span>Upload a file</span>
-                                            </span>
-                                            <p className="pl-1">or drag and drop</p>
+                                    <div className="text-center space-y-3">
+                                        <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+                                            <svg className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
                                         </div>
-                                        <p className="text-xs text-gray-500">PNG, JPG to 10MB</p>
+                                        <div className="space-y-1">
+                                            <p className="text-sm font-medium text-foreground">Click to upload proof</p>
+                                            <p className="text-xs text-muted-foreground">SVG, PNG, JPG or GIF (max. 10MB)</p>
+                                        </div>
                                     </div>
                                 )}
-
                                 <input
                                     id="file-upload"
                                     name="file-upload"
@@ -248,29 +248,37 @@ export default function WorkImagesPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium mb-1">Resolution Notes</label>
+                            <label className="block text-sm font-semibold mb-2 text-foreground">Resolution Notes</label>
                             <textarea
-                                className="w-full p-2 rounded-md border border-input bg-background min-h-[80px]"
-                                placeholder="Describe what work was done..."
+                                className="w-full p-3 rounded-xl border border-input bg-background min-h-[100px] focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm resize-y font-medium text-sm placeholder:text-muted-foreground/70"
+                                placeholder="Describe the work done..."
                                 value={resolutionNotes}
                                 onChange={(e) => setResolutionNotes(e.target.value)}
                             />
                         </div>
 
-                        {error && <p className="text-sm text-red-500">{error}</p>}
+                        {error && <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm font-medium border border-red-100 flex items-center gap-2">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            {error}
+                        </div>}
 
                         <div className="flex gap-3 pt-2">
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
+                                className="flex-1 bg-primary text-primary-foreground py-2.5 rounded-xl font-bold hover:opacity-90 disabled:opacity-50 shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
                             >
-                                {submitting ? "Uploading..." : "Submit & Resolve"}
+                                {submitting ? (
+                                    <>
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                        Submitting...
+                                    </>
+                                ) : "Submit & Mark Resolved"}
                             </button>
                             <button
                                 type="button"
                                 onClick={handleCancelUpload}
-                                className="px-4 py-2 rounded-lg border border-input hover:bg-accent"
+                                className="px-5 py-2.5 rounded-xl border border-input font-semibold hover:bg-accent transition-colors"
                             >
                                 Cancel
                             </button>
