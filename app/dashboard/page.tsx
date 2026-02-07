@@ -1,9 +1,36 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import ComplaintList from "@/components/issues/ComplaintList";
 import { useUser } from "@/contexts/UserContext";
 
 export default function DashboardPage() {
   const { user } = useUser();
+  const [stats, setStats] = useState({
+    totalReports: 0,
+    resolved: 0,
+    points: 0
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const res = await fetch("/api/citizen/stats", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          setStats(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch stats", err);
+      }
+    };
+    fetchStats();
+  }, []);
 
   if (!user) return null;
 
@@ -16,29 +43,28 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-card text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-primary/50 transition-colors">
-          <div className="text-muted-foreground text-sm font-medium">Account Status</div>
-          <div className="text-2xl font-bold mt-2">Active</div>
-          <div className="text-xs text-muted-foreground mt-1">All systems operational</div>
+          <div className="text-muted-foreground text-sm font-medium uppercase">Total Reports</div>
+          <div className="text-2xl font-bold mt-2">{stats.totalReports}</div>
+          <div className="text-xs text-muted-foreground mt-1">All time</div>
         </div>
         <div className="bg-card text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-primary/50 transition-colors">
-          <div className="text-muted-foreground text-sm font-medium">Member Since</div>
-          <div className="text-2xl font-bold mt-2">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</div>
-          <div className="text-xs text-muted-foreground mt-1">Welcome aboard!</div>
+          <div className="text-muted-foreground text-sm font-medium uppercase">Resolved</div>
+          <div className="text-2xl font-bold text-green-600 mt-2">{stats.resolved}</div>
+          <div className="text-xs text-muted-foreground mt-1">Successfully fixed</div>
+        </div>
+        <div className="bg-card text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-primary/50 transition-colors">
+          <div className="text-muted-foreground text-sm font-medium uppercase">Points</div>
+          <div className="text-2xl font-bold text-amber-500 mt-2">{stats.points}</div>
+          <div className="text-xs text-muted-foreground mt-1">Contribution Score</div>
         </div>
       </div>
 
-      {/* Quick Actions */}
+      {/* Complaint List */}
       <div>
-        <div className="bg-card text-card-foreground rounded-xl p-6 border border-border shadow-sm">
-          <h2 className="text-lg font-bold mb-4">Quick Actions</h2>
-          <div className="space-y-3">
-            <button className="w-full py-3 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 font-medium transition-colors">Edit Profile</button>
-            <button className="w-full py-3 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 font-medium transition-colors">Change Password</button>
-            <button className="w-full py-3 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 font-medium transition-colors">Settings</button>
-          </div>
-        </div>
+        <h2 className="text-xl font-bold mb-4">Your Complaints</h2>
+        <ComplaintList />
       </div>
     </div>
   );
