@@ -32,7 +32,7 @@ export default function Sidebar({ role }: SidebarProps) {
         { name: "Complain", href: "/dashboard/complain", icon: FileText },
         { name: "About Us", href: "/dashboard/about", icon: Info },
         { name: "Contact", href: "/dashboard/contact", icon: Phone },
-        { name: "Help", href: "/help", icon: HelpCircle },
+        { name: "Help", href: "/dashboard/citizen/help", icon: HelpCircle },
     ];
 
     const authorityLinks = [
