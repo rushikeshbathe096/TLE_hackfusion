@@ -14,7 +14,8 @@ export default function DashboardPage() {
   const [stats, setStats] = useState({
     totalReports: 0,
     resolved: 0,
-    points: 0
+    inProgress: 0,
+    pending: 0
   });
 
   useEffect(() => {
@@ -68,21 +69,26 @@ export default function DashboardPage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-card/80 backdrop-blur-sm text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-primary/50 transition-colors">
             <div className="text-muted-foreground text-sm font-medium uppercase">Total Reports</div>
             <div className="text-2xl font-bold mt-2">{stats.totalReports}</div>
             <div className="text-xs text-muted-foreground mt-1">All time</div>
           </div>
-          <div className="bg-card/80 backdrop-blur-sm text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-primary/50 transition-colors">
+          <div className="bg-card/80 backdrop-blur-sm text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-green-500/50 transition-colors">
             <div className="text-muted-foreground text-sm font-medium uppercase">Resolved</div>
             <div className="text-2xl font-bold text-green-600 mt-2">{stats.resolved}</div>
             <div className="text-xs text-muted-foreground mt-1">Successfully fixed</div>
           </div>
-          <div className="bg-card/80 backdrop-blur-sm text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-primary/50 transition-colors">
-            <div className="text-muted-foreground text-sm font-medium uppercase">Points</div>
-            <div className="text-2xl font-bold text-amber-500 mt-2">{stats.points}</div>
-            <div className="text-xs text-muted-foreground mt-1">Contribution Score</div>
+          <div className="bg-card/80 backdrop-blur-sm text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-blue-500/50 transition-colors">
+            <div className="text-muted-foreground text-sm font-medium uppercase">In Progress</div>
+            <div className="text-2xl font-bold text-blue-600 mt-2">{stats.inProgress || 0}</div>
+            <div className="text-xs text-muted-foreground mt-1">Being worked on</div>
+          </div>
+          <div className="bg-card/80 backdrop-blur-sm text-card-foreground rounded-xl p-6 border border-border shadow-sm hover:border-yellow-500/50 transition-colors">
+            <div className="text-muted-foreground text-sm font-medium uppercase">Open</div>
+            <div className="text-2xl font-bold text-yellow-600 mt-2">{stats.pending || 0}</div>
+            <div className="text-xs text-muted-foreground mt-1">Pending review</div>
           </div>
         </div>
 

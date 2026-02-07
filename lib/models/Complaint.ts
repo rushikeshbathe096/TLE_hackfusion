@@ -70,6 +70,12 @@ const ComplaintSchema = new mongoose.Schema(
             default: "OPEN",
         },
 
+        priority: {
+            type: String,
+            enum: ["Low", "Medium", "High"],
+            default: "Low",
+        },
+
         assignedStaff: [
             {
                 type: mongoose.Schema.Types.ObjectId,
