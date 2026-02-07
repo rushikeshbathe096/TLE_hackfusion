@@ -7,7 +7,7 @@ export async function getDepartmentComplaints(department: string) {
     await connectDB();
 
     const complaints = await Complaint.find({ department })
-        .populate("assignedTo", "name email")
+        .populate("assignedStaff", "name email")
         .populate("createdBy", "name")
         .lean();
 
