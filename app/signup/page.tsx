@@ -8,6 +8,8 @@ import DarkVeil from "@/components/DarkVeil";
 // @ts-ignore
 import Particles from "@/components/Particles";
 import { ThemeLogo } from "@/components/theme-logo";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const SignUp = () => {
     const router = useRouter();
@@ -22,6 +24,7 @@ const SignUp = () => {
     const [success, setSuccess] = useState<string | null>(null);
     const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const { t } = useLanguage();
 
     useEffect(() => {
         setMounted(true);
@@ -48,7 +51,7 @@ const SignUp = () => {
                 if (file) {
                     formData.append("govtId", file);
                 } else {
-                    setError("Government ID is required for this role");
+                    setError(t('auth.govtIdRequired'));
                     setLoading(false);
                     return;
                 }
@@ -60,14 +63,14 @@ const SignUp = () => {
             });
             const data = await res.json();
             if (!res.ok) {
-                setError(data.error || 'Sign up failed');
+                setError(data.error || t('auth.signupFailed'));
                 setLoading(false);
                 return;
             }
-            setSuccess('Account created! Redirecting to login...');
+            setSuccess(t('auth.accountCreated'));
             setTimeout(() => router.push('/login'), 1500);
         } catch (err) {
-            setError('Network error');
+            setError(t('auth.networkError'));
         } finally {
             setLoading(false);
         }
@@ -75,6 +78,11 @@ const SignUp = () => {
 
     return (
         <div className="min-h-screen relative flex items-center justify-center bg-background text-foreground transition-colors duration-300 overflow-hidden">
+
+            {/* Language Switcher - Top Right */}
+            <div className="absolute top-4 right-4 z-50">
+                <LanguageSwitcher />
+            </div>
 
             {/* Dark Mode Background */}
             {mounted && resolvedTheme === "dark" && (
@@ -109,18 +117,18 @@ const SignUp = () => {
             <div className="relative z-10 w-full max-w-md bg-card rounded-2xl p-8 shadow-xl ring-1 ring-border">
                 <div className="flex flex-col items-center mb-6">
                     <ThemeLogo className="w-16 h-16 mb-2" />
-                    <h2 className="text-2xl font-bold text-center">Create an account</h2>
+                    <h2 className="text-2xl font-bold text-center">{t('auth.createAccount')}</h2>
                 </div>
                 <form onSubmit={handleSignUp} className="space-y-4">
                     <div className="text-sm text-muted-foreground text-center">
-                        Already have an account?{' '}
+                        {t('auth.alreadyAccount')}{' '}
                         <button type="button" onClick={() => router.push('/login')} className="underline ml-1 font-semibold text-foreground">
-                            Sign in
+                            {t('auth.signin')}
                         </button>
                     </div>
 
                     <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Full name</label>
+                        <label className="block text-sm text-muted-foreground mb-1">{t('auth.name')}</label>
                         <input
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -131,7 +139,7 @@ const SignUp = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Email</label>
+                        <label className="block text-sm text-muted-foreground mb-1">{t('auth.email')}</label>
                         <input
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -142,7 +150,7 @@ const SignUp = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Password</label>
+                        <label className="block text-sm text-muted-foreground mb-1">{t('auth.password')}</label>
                         <input
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -153,7 +161,7 @@ const SignUp = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm text-muted-foreground mb-1">Role</label>
+                        <label className="block text-sm text-muted-foreground mb-1">{t('auth.role')}</label>
                         <select
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
@@ -168,7 +176,7 @@ const SignUp = () => {
                     {(role === 'authority' || role === 'staff') && (
                         <>
                             <div>
-                                <label className="block text-sm text-muted-foreground mb-1">Department</label>
+                                <label className="block text-sm text-muted-foreground mb-1">{t('auth.department')}</label>
                                 <select
                                     value={department}
                                     onChange={(e) => setDepartment(e.target.value)}
@@ -182,7 +190,7 @@ const SignUp = () => {
                             </div>
 
                             <div>
-                                <label className="block text-sm text-muted-foreground mb-1">Government ID (Upload)</label>
+                                <label className="block text-sm text-muted-foreground mb-1">{t('auth.govtId')} (Upload)</label>
                                 <input
                                     type="file"
                                     accept="image/*,application/pdf"
@@ -199,10 +207,10 @@ const SignUp = () => {
 
                     <div className="flex items-center justify-between">
                         <button type="submit" className="btn bg-primary text-primary-foreground px-6 py-2 hover:opacity-90 transition" disabled={loading}>
-                            {loading ? 'Please wait...' : 'Create account'}
+                            {loading ? 'Please wait...' : t('auth.createAccount')}
                         </button>
                         <button type="button" onClick={() => router.push('/')} className="text-sm text-muted-foreground hover:text-foreground">
-                            Cancel
+                            {t('auth.cancel')}
                         </button>
                     </div>
                 </form>

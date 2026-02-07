@@ -2,51 +2,38 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-
-const slides = [
-    {
-        id: 1,
-        title: "CityPulse Revolution",
-        subtitle: "Transforming urban issue reporting into a transparent, action‑driven civic process.",
-        features: [
-            "Department‑Based Reporting: Citizens select Road, Water, etc.",
-            "Duplicate Detection: Locations grouped to increase urgency",
-            "Real‑Time Tracking: Full visibility from Open to Resolved",
-            "Public Accountability: Fixed timestamps, no silent deletions"
-        ],
-        gradient: "from-blue-900/90 to-cyan-900/90",
-        image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=80&w=2000"
-    },
-    {
-        id: 2,
-        title: "Smart Governance",
-        subtitle: "Empowering departments with priority‑driven, data‑backed decision making.",
-        features: [
-            "Department‑Restricted Dashboards: Focus on relevant issues",
-            "Priority‑Based Ordering: Prioritized by frequency and time",
-            "Duplicate‑Free Management: Real public demand reflection",
-            "Transparent Assignment: Tasks logged and assigned to staff"
-        ],
-        gradient: "from-indigo-900/90 to-purple-900/90",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000"
-    },
-    {
-        id: 3,
-        title: "Field Action Force",
-        subtitle: "Enabling field staff with clear tasks, proof‑based resolution, and real‑time coordination.",
-        features: [
-            "Department‑Specific Allocation: Only relevant issues assigned",
-            "Structured Workflow: Open → In Progress → On Hold → Resolved",
-            "Proof‑of‑Work Uploads: Images required for verification",
-            "Time‑Stamped Records: Permanent logs for audit tracking"
-        ],
-        gradient: "from-emerald-900/90 to-teal-900/90",
-        image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=2000"
-    }
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function SimpleCarousel() {
+    const { t } = useLanguage();
     const [current, setCurrent] = useState(0);
+
+    const slides = [
+        {
+            id: 1,
+            title: t('slides.revolution.title'),
+            subtitle: t('slides.revolution.subtitle'),
+            features: t('slides.revolution.features'), // features is an array in translations
+            gradient: "from-blue-900/90 to-cyan-900/90",
+            image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=80&w=2000"
+        },
+        {
+            id: 2,
+            title: t('slides.governance.title'),
+            subtitle: t('slides.governance.subtitle'),
+            features: t('slides.governance.features'),
+            gradient: "from-indigo-900/90 to-purple-900/90",
+            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000"
+        },
+        {
+            id: 3,
+            title: t('slides.force.title'),
+            subtitle: t('slides.force.subtitle'),
+            features: t('slides.force.features'),
+            gradient: "from-emerald-900/90 to-teal-900/90",
+            image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=2000"
+        }
+    ];
 
     const next = useCallback(() => {
         setCurrent((curr) => (curr + 1) % slides.length);
@@ -85,7 +72,7 @@ export function SimpleCarousel() {
                         {/* Content Container */}
                         <div className="relative z-10 h-full flex flex-col justify-center p-8 md:p-20 max-w-4xl">
                             <div className="animate-in slide-in-from-left-8 fade-in duration-700 delay-100">
-                                <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-4 shadow-sm drop-shadow-md">
+                                <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-4 shadow-sm drop-shadow-md break-words">
                                     {slide.title}
                                 </h2>
                                 <h3 className="text-xl md:text-2xl font-medium text-white/90 mb-8 border-l-4 border-primary pl-4">
@@ -96,7 +83,7 @@ export function SimpleCarousel() {
                             <div className="space-y-4 animate-in slide-in-from-bottom-8 fade-in duration-700 delay-300">
                                 <p className="text-white/80 font-bold uppercase tracking-widest text-sm mb-4">Key Features</p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                                    {slide.features.map((feature, i) => (
+                                    {(slide.features as string[]).map((feature: string, i: number) => (
                                         <div key={i} className="flex items-center gap-3 text-white/90 text-lg">
                                             <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
                                             {feature}

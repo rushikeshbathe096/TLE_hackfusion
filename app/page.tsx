@@ -11,11 +11,14 @@ import { useEffect, useState } from "react";
 // @ts-ignore
 import Particles from "@/components/Particles";
 import { ShieldCheck, Landmark, FileSearch } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function Home() {
   const { user, loading } = useUser();
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     setMounted(true);
@@ -83,6 +86,7 @@ export default function Home() {
 
             {/* Right: Auth buttons */}
             <div className="flex items-center gap-2 sm:gap-4 text-sm">
+              <LanguageSwitcher />
               <ModeToggle />
 
               {!loading && user ? (
@@ -93,13 +97,13 @@ export default function Home() {
                     href="/login"
                     className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition whitespace-nowrap"
                   >
-                    Sign in
+                    {t('nav.login')}
                   </Link>
                   <Link
                     href="/signup"
                     className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition shadow-sm whitespace-nowrap"
                   >
-                    Sign up
+                    {t('nav.signup')}
                   </Link>
                 </>
               )}
@@ -113,22 +117,23 @@ export default function Home() {
           {/* Carousel */}
           <SimpleCarousel />
 
-          {/* Greeting */}
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">
-            Welcome to City Pulse
-          </h1>
-          <p className="mt-4 text-muted-foreground text-lg">
-            Raise civic issues. Amplify local voices. Drive real change.
-          </p>
+          {/* HERO SECTION */}
+          <div className="mb-16 animate-fade-in-up">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 dark:from-blue-400 dark:via-purple-400 dark:to-emerald-400 drop-shadow-sm break-words leading-tight">
+              {t('hero.title')}
+            </h1>
+            <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              {t('hero.subtitle')}
+            </p>
 
-          {/* CTA Button */}
-          <div className="mt-10">
-            <Link
-              href={user ? "/dashboard" : "/signup"}
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-cyan-600 text-white font-semibold shadow-lg hover:bg-cyan-700 transition"
-            >
-              Raise a Problem
-            </Link>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Link
+                href="/dashboard"
+                className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+              >
+                {t('hero.cta_report')}
+              </Link>
+            </div>
           </div>
 
           {/* CARDS */}
@@ -138,14 +143,14 @@ export default function Home() {
             <div className="bg-card text-card-foreground rounded-2xl p-6 text-left ring-1 ring-border shadow-sm hover:shadow-md transition border-t-4 border-blue-500">
               <h3 className="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400 flex items-center gap-2">
                 <ShieldCheck className="w-6 h-6" />
-                Built on Trust
+                {t('features.trust.title')}
               </h3>
               <div className="text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
-                  CityPulse is designed with citizens at its core. It provides a reliable and transparent platform where users can report real‑world civic issues without fear of their complaints being ignored, altered, or lost.
+                  {t('features.trust.desc1')}
                 </p>
                 <p>
-                  Every complaint submitted is permanent, time‑stamped, and traceable through its entire lifecycle. Citizens can clearly see the current status of their issues, the department handling them, and the progress being made—building confidence and trust in the system.
+                  {t('features.trust.desc2')}
                 </p>
               </div>
             </div>
@@ -154,14 +159,14 @@ export default function Home() {
             <div className="bg-card text-card-foreground rounded-2xl p-6 text-left ring-1 ring-border shadow-sm hover:shadow-md transition border-t-4 border-purple-500">
               <h3 className="text-xl font-bold mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2">
                 <Landmark className="w-6 h-6" />
-                Designed for Authorities
+                {t('features.authority.title')}
               </h3>
               <div className="text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
-                  CityPulse prioritizes efficiency with department‑specific dashboards and smart sorting. Issues are automatically grouped by location and category, filtering out duplicates to reduce noise.
+                  {t('features.authority.desc1')}
                 </p>
                 <p>
-                  Complaints are ranked by urgency and age, helping authorities focus on critical problems. Streamlined task assignment ensures accountability and faster, data-driven decision making. This ensures resources are allocated exactly where they are needed most.
+                  {t('features.authority.desc2')}
                 </p>
               </div>
             </div>
@@ -170,14 +175,14 @@ export default function Home() {
             <div className="bg-card text-card-foreground rounded-2xl p-6 text-left ring-1 ring-border shadow-sm hover:shadow-md transition border-t-4 border-emerald-500">
               <h3 className="text-xl font-bold mb-4 text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
                 <FileSearch className="w-6 h-6" />
-                Powered by Transparency
+                {t('features.transparency.title')}
               </h3>
               <div className="text-sm text-muted-foreground leading-relaxed space-y-3">
                 <p>
-                  Transparency drives every step of the CityPulse workflow. From creation to resolution, every action is permanently logged and time‑stamped, creating an undeniable audit trail.
+                  {t('features.transparency.desc1')}
                 </p>
                 <p>
-                  This structured system prevents hidden actions or manual manipulation. By keeping citizens, authorities, and staff on the same page, we ensure fair governance and long-term public trust. Real-time updates keep everyone informed, fostering a culture of openness.
+                  {t('features.transparency.desc2')}
                 </p>
               </div>
             </div>
@@ -187,7 +192,7 @@ export default function Home() {
 
         {/* FOOTER */}
         <footer className="text-center py-8 text-muted-foreground text-sm">
-          © {new Date().getFullYear()} City Pulse • Built for Hackathons
+          {t('footer.rights')} • Built for Hackathons
         </footer>
       </div>
     </div>
