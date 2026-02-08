@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import StatsPanel from "./StatsPanel";
-import MapPreview from "./MapPreview";
+// Dynamically import MapPreview to prevent Leaflet SSR issues
+const MapPreview = dynamic(() => import("./MapPreview"), { ssr: false });
 import DepartmentCharts from "./DepartmentCharts";
 import { Loader2 } from "lucide-react";
 

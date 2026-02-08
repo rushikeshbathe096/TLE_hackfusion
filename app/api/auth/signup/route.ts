@@ -20,6 +20,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    if (!email.endsWith("@gmail.com")) {
+      return NextResponse.json({ error: "Only @gmail.com email addresses are allowed" }, { status: 400 });
+    }
+
     if ((role === "authority" || role === "staff") && !govtIdFile) {
       return NextResponse.json({ error: "Government ID is required for this role" }, { status: 400 });
     }

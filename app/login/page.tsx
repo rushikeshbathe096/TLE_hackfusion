@@ -10,6 +10,8 @@ import { ThemeLogo } from "@/components/theme-logo";
 import { useUser } from "@/contexts/UserContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+// @ts-ignore
+import GoogleSignInButton from "@/components/GoogleSignInButton";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -139,6 +141,28 @@ export default function LoginPage() {
     }
   }
 
+  // Handle Google Auth Callback logic (if redirected with token/error)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const errorParam = params.get("error");
+
+    if (errorParam) {
+      setError(decodeURIComponent(errorParam));
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    if (token) {
+      localStorage.setItem("token", token);
+      refreshUser().then(() => {
+        // Redirect logic handles the rest based on user role in the *other* useEffect
+      });
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [refreshUser]);
+
   return (
     <div className="min-h-screen relative flex items-center justify-center text-foreground overflow-hidden bg-background transition-colors duration-300">
 
@@ -185,6 +209,21 @@ export default function LoginPage() {
               <ThemeLogo className="w-16 h-16 mb-2" />
               <h2 className="text-2xl font-bold text-center">{t('auth.signin')}</h2>
             </div>
+
+            {/* Google Sign In */}
+            <div className="mb-6">
+              {/* @ts-ignore */}
+              <GoogleSignInButton />
+              <div className="relative mt-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-muted-foreground/20" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                </div>
+              </div>
+            </div>
+
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
                 <label className="block text-sm text-muted-foreground mb-1">{t('auth.email')}</label>

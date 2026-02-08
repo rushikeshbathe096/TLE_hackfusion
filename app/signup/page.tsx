@@ -10,6 +10,8 @@ import Particles from "@/components/Particles";
 import { ThemeLogo } from "@/components/theme-logo";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+// @ts-ignore
+import GoogleSignInButton from "@/components/GoogleSignInButton";
 
 const SignUp = () => {
     const router = useRouter();
@@ -118,6 +120,18 @@ const SignUp = () => {
                 <div className="flex flex-col items-center mb-6">
                     <ThemeLogo className="w-16 h-16 mb-2" />
                     <h2 className="text-2xl font-bold text-center">{t('auth.createAccount')}</h2>
+                </div>
+                <div className="mb-6">
+                    {/* @ts-ignore */}
+                    <GoogleSignInButton />
+                    <div className="relative mt-6">
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t border-muted-foreground/20" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-card px-2 text-muted-foreground">Or sign up with</span>
+                        </div>
+                    </div>
                 </div>
                 <form onSubmit={handleSignUp} className="space-y-4">
                     <div className="text-sm text-muted-foreground text-center">
