@@ -14,6 +14,8 @@ import { ShieldCheck, Landmark, FileSearch } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import ImpactSection from "@/components/landing/ImpactSection";
+import GeminiChatbot from "@/components/landing/GeminiChatbot";
+
 
 export default function Home() {
   const { user, loading } = useUser();
@@ -126,6 +128,10 @@ export default function Home() {
             <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {t('hero.subtitle')}
             </p>
+
+
+
+            <GeminiChatbot />
 
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link
