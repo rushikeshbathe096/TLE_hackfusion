@@ -61,13 +61,13 @@ export default function StaffAllocationPage() {
 
     return (
         <div className="relative min-h-[calc(100vh-4rem)]">
-            <div className={`fixed inset-0 z-0 pointer-events-none ${isLight ? 'opacity-30' : 'opacity-100'}`}>
+            <div className={`fixed inset-0 z-0 pointer-events-none ${isLight ? 'opacity-20' : 'opacity-100'}`}>
                 <Galaxy
                     starSpeed={0.5}
                     density={1}
                     hueShift={isLight ? 200 : 140}
                     speed={1}
-                    glowIntensity={isLight ? 0.1 : 0.3}
+                    glowIntensity={isLight ? 0.05 : 0.3}
                     saturation={0}
                     mouseRepulsion
                     repulsionStrength={2}
