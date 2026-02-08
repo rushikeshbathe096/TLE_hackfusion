@@ -1,60 +1,125 @@
-# CityPulse 🏙️  
-Urban Infrastructure Incident Management Platform
+CityPulse
 
-CityPulse is a web-based platform that enables citizens to report civic infrastructure issues and ensures they are routed, prioritized, and resolved transparently by the appropriate municipal departments.
+CityPulse is a full-stack civic issue management platform built with Next.js.
+It enables citizens to report local issues, authorities to manage and assign complaints, and staff members to track and resolve tasks through role-based dashboards.
 
-Built for hackathons with a focus on **accountability, reduced duplication, and clear workflows**.
+This project was developed as part of a hackathon and focuses on clear workflows, secure APIs, and practical real-world use cases.
 
----
+Tech Stack
 
-## 🚩 Problem Statement
+Frontend & Backend
 
-Cities receive thousands of complaints related to infrastructure such as potholes, electricity failures, water leaks, and sanitation issues.  
-These complaints often suffer from:
-- Lack of clear ownership
-- Duplicate reports causing noise
-- Poor prioritization
-- Zero transparency for citizens
+Next.js (App Router)
 
-CityPulse solves this by enforcing **department-based routing**, **duplicate consolidation**, and **priority-driven resolution**, while keeping the entire process visible.
+TypeScript
 
----
+Tailwind CSS
 
-## 💡 Solution Overview
+Backend & Infrastructure
 
-CityPulse provides a structured workflow:
+Node.js
 
-1. **Citizens** report issues
-2. **Authorities** validate and assign them to the correct department
-3. **Department staff** resolve issues based on priority
-4. **Duplicate complaints** increase urgency instead of clutter
-5. **Public transparency** ensures accountability
+MongoDB (Mongoose)
 
----
+JWT-based authentication
 
-## 🧠 Core Features
+Google OAuth
 
-### 1. Department-Based Routing
-- Each issue category maps to a specific department
-- Authorities can confirm or reassign departments
-- Departments only see issues relevant to them
+Email & OTP handling
 
-### 2. Department-Specific Staff Workers
-- Staff workers belong to one department
-- Workers can only act on issues assigned to their department
-- Reduces errors and enforces responsibility
+Deployment
 
-### 3. Duplicate Complaint Handling
-- Complaints with the same problem type and location are grouped
-- Instead of creating new issues, a `requestCount` is increased
-- Converts repetition into measurable urgency
+Vercel
 
-### 4. Priority-Based Resolution
-Issues are prioritized using:
-- Number of requests (higher demand first)
-- Age of the issue (older issues first)
+Features
+Authentication
 
-This ensures fairness and effective resource allocation.
+Email and password login
 
-### 5. Transparent Status Flow
-Each issue follows a strict lifecycle:
+Google OAuth login
+
+OTP-based password reset
+
+Role-based authorization
+
+User Roles
+
+Citizen
+
+Create complaints
+
+Track complaint status
+
+View complaint history
+
+Authority
+
+View complaints by department
+
+Assign complaints to staff
+
+View reports and statistics
+
+Staff
+
+View assigned tasks
+
+Update task status
+
+Upload proof of work
+
+General
+
+Secure API routes
+
+Department-level access control
+
+Dedicated dashboards for each role
+
+Installation & Setup
+1. Clone the repository
+git clone https://github.com/<your-username>/<repo-name>.git
+cd <repo-name>
+
+2. Install dependencies
+npm install
+
+3. Run the development server
+npm run dev
+
+
+The application will run at:
+
+http://localhost:3000
+
+Build for Production
+npm run build
+npm start
+
+Deployment
+
+The project is designed to be deployed on Vercel.
+
+General steps:
+
+Push the repository to GitHub
+
+Import the project into Vercel
+
+Configure project settings
+
+Deploy
+
+Notes
+
+This project is built entirely with Next.js and Node.js
+
+No Python or external backend services are required
+
+All dependencies are managed via package.json
+
+API routes are implemented using the Next.js App Router
+
+License
+
+This project was created for a hackathon and is intended for educational and demonstration purposes.
