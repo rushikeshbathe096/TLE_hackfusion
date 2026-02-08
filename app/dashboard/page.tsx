@@ -45,7 +45,7 @@ export default function DashboardPage() {
 
   return (
     <div className="relative min-h-[calc(100vh-4rem)]">
-      <div className={`fixed inset-0 z-0 pointer-events-none ${isLight ? 'opacity-30' : 'opacity-100'}`}>
+      <div className={`fixed inset-0 z-0 pointer-events-none ${isLight ? 'opacity-10' : 'opacity-40'}`}>
         <Galaxy
           starSpeed={0.5}
           density={1}
