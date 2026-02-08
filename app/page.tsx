@@ -50,7 +50,7 @@ export default function Home() {
 
       {/* Light Mode Background Effect */}
       {mounted && resolvedTheme === "light" && (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
           <Particles
             particleCount={300}
             particleSpread={10}
