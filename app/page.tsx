@@ -13,6 +13,7 @@ import Particles from "@/components/Particles";
 import { ShieldCheck, Landmark, FileSearch } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import ImpactSection from "@/components/landing/ImpactSection";
 
 export default function Home() {
   const { user, loading } = useUser();
@@ -49,7 +50,7 @@ export default function Home() {
 
       {/* Light Mode Background Effect */}
       {mounted && resolvedTheme === "light" && (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
           <Particles
             particleCount={300}
             particleSpread={10}
@@ -135,6 +136,9 @@ export default function Home() {
               </Link>
             </div>
           </div>
+
+          {/* IMPACT & INSIGHTS SECTION */}
+          <ImpactSection />
 
           {/* CARDS */}
           <section className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -100,17 +100,25 @@ export const generateComplaintPDF = async (complaint: any, user: any) => {
                     ? complaint.imageUrl
                     : `${window.location.origin}${complaint.imageUrl}`;
 
-                const img = new Image();
-                img.src = imgUrl;
+                // Fetch image and convert to Base64
+                const response = await fetch(imgUrl);
+                if (!response.ok) throw new Error("Failed to fetch image");
 
-                // Wait for image to load to get dims
-                await new Promise((resolve, reject) => {
-                    img.onload = resolve;
-                    img.onerror = reject;
+                const blob = await response.blob();
+                const base64Data = await new Promise<string | ArrayBuffer | null>((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.readAsDataURL(blob);
                 });
 
-                // Add image to PDF (fit width keeping aspect ratio, max height 80)
-                const imgProps = doc.getImageProperties(img);
+                if (typeof base64Data !== 'string') throw new Error("Failed to convert image to base64");
+
+                // Get image dimensions using a temporary Image object for layout calculation
+                const tempImg = new Image();
+                tempImg.src = base64Data;
+                await new Promise((resolve) => { tempImg.onload = resolve; });
+
+                const imgProps = doc.getImageProperties(tempImg);
                 const pdfWidth = doc.internal.pageSize.getWidth() - 28;
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
@@ -123,16 +131,22 @@ export const generateComplaintPDF = async (complaint: any, user: any) => {
                 doc.setFontSize(12);
                 doc.setFont("helvetica", "bold");
                 doc.text("Attached Evidence:", 14, finalY);
-                doc.addImage(img, 'JPEG', 14, finalY + 5, pdfWidth, Math.min(pdfHeight, 100)); // Cap height at 100 to save space
+
+                // Detect format from URL or Blob type
+                let format = 'JPEG';
+                if (blob.type === 'image/png') format = 'PNG';
+                else if (imgUrl.toLowerCase().endsWith('.png')) format = 'PNG';
+
+                doc.addImage(base64Data, format, 14, finalY + 5, pdfWidth, Math.min(pdfHeight, 100)); // Cap height at 100 to save space
 
                 finalY += Math.min(pdfHeight, 100) + 15;
 
             } catch (e) {
                 console.error("Could not add image to PDF", e);
-                doc.setFontSize(10);
-                doc.setTextColor(255, 0, 0);
-                doc.text("(Image attachment could not be loaded)", 14, finalY);
-                finalY += 10;
+                // doc.setFontSize(10);
+                // doc.setTextColor(255, 0, 0);
+                // doc.text("(Image attachment could not be loaded)", 14, finalY);
+                // finalY += 10;
             }
         }
 
