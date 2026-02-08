@@ -65,17 +65,27 @@ This project was developed as part of a hackathon and focuses on clear workflows
 ```bash
 git clone https://github.com/<your-username>/<repo-name>.git
 cd <repo-name>
-2. Install dependencies
+```
+###2. Install dependencies
+```bash
 npm install
-3. Run the development server
+```
+###3. Run the development server
+```bash
 npm run dev
-The application will be available at:
+```
 
+###The application will be available at:
+```bash
 http://localhost:3000
+```
 Build for Production
+```bash
 npm run build
 npm start
-Deployment
+```
+###Deployment
+
 The project is designed to be deployed on Vercel.
 
 General steps:
@@ -86,9 +96,10 @@ Import the project into Vercel
 
 Configure project settings
 
-Deploy
+###Deploy
 
 Notes
+
 This project is built entirely with Next.js and Node.js
 
 No Python dependencies are required
@@ -97,6 +108,7 @@ All dependencies are managed via package.json
 
 API routes are implemented using the Next.js App Router
 
-License
+###License
+
 This project was created for a hackathon and is intended for educational and demonstration purposes.
 
