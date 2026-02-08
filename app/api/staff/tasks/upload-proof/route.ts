@@ -40,7 +40,9 @@ export async function POST(req: Request) {
         let proofUrl = "";
         if (proofFile) {
             const buffer = Buffer.from(await proofFile.arrayBuffer());
-            const filename = Date.now() + "_" + proofFile.name.replaceAll(" ", "_");
+            // Sanitize filename: alpanumeric, dots, hyphens only
+            const sanitizedOriginalName = proofFile.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+            const filename = `${Date.now()}_${sanitizedOriginalName}`;
 
             // Write to public/uploads
             const { writeFile } = require("fs/promises");

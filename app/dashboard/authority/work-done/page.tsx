@@ -64,6 +64,18 @@ export default function WorkDonePage() {
 
     const isLight = mounted && resolvedTheme === 'light';
 
+    const formatProofUrl = (url: string) => {
+        if (!url) return '';
+        // Fix windows paths if present
+        let cleanUrl = url.replace(/\\/g, '/');
+        // Ensure absolute URL if not already
+        if (!cleanUrl.startsWith('http')) {
+            // If relative, ensure it starts with /
+            if (!cleanUrl.startsWith('/')) cleanUrl = `/${cleanUrl}`;
+        }
+        return cleanUrl;
+    };
+
     return (
         <div className="relative min-h-[calc(100vh-4rem)]">
             <div className={`fixed inset-0 z-0 pointer-events-none ${isLight ? 'opacity-30' : 'opacity-100'}`}>
@@ -97,9 +109,12 @@ export default function WorkDonePage() {
                             <div className="relative aspect-video bg-muted flex items-center justify-center overflow-hidden">
                                 {complaint.proofUrl ? (
                                     <img
-                                        src={complaint.proofUrl}
+                                        src={formatProofUrl(complaint.proofUrl)}
                                         alt="Proof of work"
                                         className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                                        onError={(e) => {
+                                            e.currentTarget.style.display = 'none';
+                                        }}
                                     />
                                 ) : (
                                     <div className="flex flex-col items-center text-muted-foreground">
