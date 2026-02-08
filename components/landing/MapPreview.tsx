@@ -32,7 +32,6 @@ interface MapPreviewProps {
 // Leaflet icon fix for Next.js
 const fixLeafletIcon = async () => {
     try {
-        const L = (await import('leaflet')).default;
         // @ts-ignore
         delete L.Icon.Default.prototype._getIconUrl;
         L.Icon.Default.mergeOptions({
