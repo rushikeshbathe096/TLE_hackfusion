@@ -27,10 +27,18 @@ export async function POST(req: Request) {
 
         // Validate complaint exists and belongs to authority's department
         const authority = await User.findById((decoded as any).id);
+        if (!authority) {
+            return NextResponse.json({ error: "Authority user not found" }, { status: 404 });
+        }
+
+        if (authority.role !== "authority") {
+            return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+        }
+
         const complaint = await Complaint.findById(complaintId);
 
         if (!complaint) return NextResponse.json({ error: "Complaint not found" }, { status: 404 });
-        if (complaint.department !== authority.department) {
+        if (!authority.department || complaint.department !== authority.department) {
             return NextResponse.json({ error: "Unauthorized for this department" }, { status: 403 });
         }
 
@@ -57,7 +65,7 @@ export async function POST(req: Request) {
             $push: {
                 statusHistory: {
                     status: updateQuery.$set?.status || complaint.status,
-                    changedBy: authority._id,
+                    changedBy: authority._id || (decoded as any).id,
                     notes: `Updated staff assignment. Count: ${staffIds.length}`
                 }
             }
