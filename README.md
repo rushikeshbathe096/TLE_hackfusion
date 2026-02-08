@@ -1,6 +1,6 @@
 # CityPulse
 
-CityPulse is a full-stack civic issue management platform built with **Next.js**.  
+CityPulse is a full-stack civic issue management platform built with Next.js.
 It enables citizens to report local issues, authorities to manage and assign complaints, and staff members to track and resolve tasks through role-based dashboards.
 
 This project was developed as part of a hackathon and focuses on clear workflows, secure APIs, and practical real-world use cases.
@@ -9,19 +9,19 @@ This project was developed as part of a hackathon and focuses on clear workflows
 
 ## Tech Stack
 
-**Frontend & Backend**
+### Frontend & Backend
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
 
-**Backend & Infrastructure**
+### Backend & Infrastructure
 - Node.js
 - MongoDB (Mongoose)
 - JWT-based authentication
 - Google OAuth
 - Email & OTP handling
 
-**Deployment**
+### Deployment
 - Vercel
 
 ---
@@ -66,49 +66,52 @@ This project was developed as part of a hackathon and focuses on clear workflows
 git clone https://github.com/<your-username>/<repo-name>.git
 cd <repo-name>
 ```
-###2. Install dependencies
+
+### 2. Install dependencies
+
 ```bash
 npm install
 ```
-###3. Run the development server
+
+### 3. Run the development server
+
 ```bash
 npm run dev
 ```
 
-###The application will be available at:
+The application will be available at:
+
 ```bash
 http://localhost:3000
 ```
-Build for Production
+
+### Build for Production
+
 ```bash
 npm run build
 npm start
 ```
-###Deployment
+
+### Deployment
 
 The project is designed to be deployed on Vercel.
 
 General steps:
 
-Push the repository to GitHub
+1. Push the repository to GitHub
+2. Import the project into Vercel
+3. Configure project settings
+4. Deploy
 
-Import the project into Vercel
+---
 
-Configure project settings
+## Notes
 
-###Deploy
+- This project is built entirely with Next.js and Node.js
+- No Python dependencies are required
+- All dependencies are managed via package.json
+- API routes are implemented using the Next.js App Router
 
-Notes
-
-This project is built entirely with Next.js and Node.js
-
-No Python dependencies are required
-
-All dependencies are managed via package.json
-
-API routes are implemented using the Next.js App Router
-
-###License
+## License
 
 This project was created for a hackathon and is intended for educational and demonstration purposes.
-
