@@ -3,6 +3,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function GoogleSignInButton() {
     const { t } = useLanguage();
@@ -13,8 +14,9 @@ export default function GoogleSignInButton() {
         setMounted(true);
     }, []);
 
-    const handleGoogleSignIn = () => {
-        window.location.href = "/api/auth/google";
+    const handleGoogleSignIn = async () => {
+        const callbackUrl = typeof window !== "undefined" ? `${window.location.origin}/api/auth/nextauth/callback?redirect=/` : "/";
+        await signIn("google", { callbackUrl });
     };
 
     return (
