@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { uploadProof } from "@/lib/services/staff/uploadProof";
 import { headers } from "next/headers";
 import jwt from "jsonwebtoken";
+import cloudinary from "@/lib/cloudinary";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
 
@@ -40,21 +41,16 @@ export async function POST(req: Request) {
         let proofUrl = "";
         if (proofFile) {
             const buffer = Buffer.from(await proofFile.arrayBuffer());
-            // Sanitize filename: alpanumeric, dots, hyphens only
-            const sanitizedOriginalName = proofFile.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-            const filename = `${Date.now()}_${sanitizedOriginalName}`;
+            const base64 = `data:${proofFile.type};base64,${buffer.toString("base64")}`;
 
-            // Write to public/uploads
-            const { writeFile } = require("fs/promises");
-            const path = require("path");
-            await writeFile(path.join(process.cwd(), "public/uploads/" + filename), buffer);
+            const uploadResponse = await cloudinary.uploader.upload(base64, {
+                folder: "staff_proof_images",
+                resource_type: "auto",
+            });
 
-            proofUrl = "/uploads/" + filename;
+            proofUrl = uploadResponse.secure_url;
         } else {
-            // If no file uploaded, maybe they provided a URL string or it's optional?
-            // For now, let's say file is optional if they just want to add notes, 
-            // but user asked for file upload specifically.
-            // If they paste a URL in a text field, we could handle that too, but let's prioritize file.
+            // If no file uploaded, check for URL
             const url = formData.get("proofUrl") as string;
             if (url) proofUrl = url;
         }
@@ -72,7 +68,6 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ task: updatedTask }, { status: 200 });
     } catch (error: any) {
-        // If service throws unauthorized, catch it here
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

@@ -1,9 +1,8 @@
 
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import path from "path";
 import { headers } from "next/headers";
 import jwt from "jsonwebtoken";
+import cloudinary from "@/lib/cloudinary";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
 
@@ -31,18 +30,14 @@ export async function POST(req: Request) {
         }
 
         const buffer = Buffer.from(await file.arrayBuffer());
-        // Sanitize filename and add timestamp
-        const sanitizedName = file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
-        const filename = `${Date.now()}_${type}_${sanitizedName}`;
+        const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-        // Ensure uploads directory exists (checked implicitly by creation below, or assuming structure)
-        // Ideally we check if public/uploads exists, but standard node fs write usually needs dir.
-        // For simplicity in this environment we assume public/uploads exists or is writable.
+        const uploadResponse = await cloudinary.uploader.upload(base64, {
+            folder: type === "profile" ? "profile_images" : "profile_documents",
+            resource_type: "auto",
+        });
 
-        const uploadDir = path.join(process.cwd(), "public/uploads");
-        await writeFile(path.join(uploadDir, filename), buffer);
-
-        const fileUrl = `/uploads/${filename}`;
+        const fileUrl = uploadResponse.secure_url;
 
         return NextResponse.json({ url: fileUrl }, { status: 200 });
 
